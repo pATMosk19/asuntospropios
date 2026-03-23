@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Asuntos Propios" />
+  <title>Asuntos Propios</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --amarillo: #F5C800;
+      --amarillo-oscuro: #C9A200;
+      --rojo: #D0021B;
+      --bg: #FAFAF7;
+      --surface: #FFFFFF;
+      --surface2: #F2F2EE;
+      --texto: #1A1A1A;
+      --texto-suave: #6B6B6B;
+      --borde: #E8E8E2;
+      --sombra: 0 2px 16px rgba(0,0,0,0.07);
+      --radio: 20px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--texto);
+      min-height: 100dvh;
+      padding-top: var(--safe-top);
+      padding-bottom: calc(var(--safe-bottom) + 80px);
+      overflow-x: hidden;
+    }
+
+    /* ── CABECERA ── */
+    header {
+      background: var(--amarillo);
+      padding: calc(var(--safe-top) + 20px) 24px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .header-titulo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      line-height: 1.1;
+      color: #1A1A1A;
+    }
+
+    .header-sub {
+      font-size: 13px;
+      color: rgba(0,0,0,0.5);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    /* ── CONTADOR GRANDE ── */
+    .contador-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+
+    .contador {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
+    }
+
+    .contador-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 52px;
+      line-height: 1;
+      color: var(--rojo);
+    }
+
+    .contador-total {
+      font-size: 20px;
+      color: rgba(0,0,0,0.35);
+      font-family: 'DM Serif Display', serif;
+    }
+
+    .contador-label {
+      font-size: 11px;
+      color: rgba(0,0,0,0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* ── BARRA DE PROGRESO ── */
+    .progreso-wrap {
+      background: var(--amarillo);
+      padding: 0 24px 20px;
+    }
+
+    .progreso-track {
+      background: rgba(0,0,0,0.12);
+      border-radius: 99px;
+      height: 8px;
+      overflow: hidden;
+    }
+
+    .progreso-fill {
+      height: 100%;
+      background: var(--rojo);
+      border-radius: 99px;
+      transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ── SECCIÓN PRINCIPAL ── */
+    main {
+      padding: 24px 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ── BOTÓN AÑADIR ── */
+    .btn-añadir {
+      background: var(--texto);
+      color: #fff;
+      border: none;
+      border-radius: var(--radio);
+      padding: 18px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: var(--sombra);
+      transition: transform 0.15s, opacity 0.15s;
+      -webkit-appearance: none;
+    }
+
+    .btn-añadir:active { transform: scale(0.97); opacity: 0.85; }
+
+    .btn-icon {
+      width: 26px;
+      height: 26px;
+      background: var(--amarillo);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      line-height: 1;
+      color: #1A1A1A;
+      flex-shrink: 0;
+    }
+
+    /* ── MODAL ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+
+    .overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .sheet {
+      background: var(--surface);
+      border-radius: 24px 24px 0 0;
+      padding: 12px 24px calc(var(--safe-bottom) + 32px);
+      width: 100%;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    }
+
+    .overlay.visible .sheet { transform: translateY(0); }
+
+    .sheet-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--borde);
+      border-radius: 99px;
+      margin: 0 auto 24px;
+    }
+
+    .sheet-titulo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      margin-bottom: 24px;
+    }
+
+    .campo-grupo {
+      margin-bottom: 18px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--texto-suave);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input[type="date"],
+    textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 2px solid transparent;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      color: var(--texto);
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input[type="date"]:focus,
+    textarea:focus {
+      border-color: var(--amarillo);
+    }
+
+    textarea {
+      resize: none;
+      height: 90px;
+    }
+
+    .btn-guardar {
+      background: var(--amarillo);
+      color: var(--texto);
+      border: none;
+      border-radius: 14px;
+      padding: 17px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: transform 0.15s, opacity 0.15s;
+      -webkit-appearance: none;
+    }
+
+    .btn-guardar:active { transform: scale(0.97); opacity: 0.85; }
+
+    /* ── LISTA DE REGISTROS ── */
+    .lista-titulo {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--texto-suave);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0 4px;
+    }
+
+    .lista {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .item {
+      background: var(--surface);
+      border-radius: var(--radio);
+      padding: 16px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      box-shadow: var(--sombra);
+      animation: entrar 0.3s cubic-bezier(.4,0,.2,1) both;
+    }
+
+    @keyframes entrar {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .item-fecha-box {
+      background: var(--amarillo);
+      border-radius: 12px;
+      padding: 8px 10px;
+      text-align: center;
+      flex-shrink: 0;
+      min-width: 48px;
+    }
+
+    .item-dia {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      line-height: 1;
+      color: #1A1A1A;
+    }
+
+    .item-mes {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(0,0,0,0.5);
+      margin-top: 2px;
+    }
+
+    .item-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-weekday {
+      font-size: 12px;
+      color: var(--texto-suave);
+      margin-bottom: 2px;
+    }
+
+    .item-nota {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--texto);
+      word-break: break-word;
+    }
+
+    .item-nota.vacia {
+      color: var(--texto-suave);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .btn-borrar {
+      background: none;
+      border: none;
+      padding: 4px;
+      cursor: pointer;
+      color: var(--borde);
+      font-size: 20px;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: color 0.15s;
+      -webkit-appearance: none;
+    }
+
+    .btn-borrar:active { color: var(--rojo); }
+
+    /* ── VACÍO ── */
+    .vacio {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--texto-suave);
+    }
+
+    .vacio-emoji {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .vacio-titulo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--texto);
+      margin-bottom: 6px;
+    }
+
+    .vacio-sub {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: calc(var(--safe-bottom) + 24px);
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--texto);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 500;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── ALERTA AGOTADO ── */
+    .alerta-agotado {
+      background: #FFF0F0;
+      border: 2px solid var(--rojo);
+      border-radius: var(--radio);
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      display: none;
+    }
+
+    .alerta-agotado.visible { display: flex; }
+
+    .alerta-agotado-icon { font-size: 24px; }
+
+    .alerta-agotado-texto {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--rojo);
+    }
+
+    /* ── AÑO SELECTOR ── */
+    .anyo-selector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 12px 0 0;
+    }
+
+    .anyo-btn {
+      background: none;
+      border: none;
+      font-size: 22px;
+      color: var(--texto);
+      cursor: pointer;
+      padding: 4px 8px;
+      opacity: 0.5;
+      transition: opacity 0.15s;
+      -webkit-appearance: none;
+    }
+
+    .anyo-btn:active { opacity: 1; }
+
+    .anyo-label {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--texto);
+      min-width: 60px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- CABECERA -->
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="header-titulo">Asuntos<br>Propios</div>
+      <div class="header-sub">Correos · <span id="anyoLabel">2025</span></div>
+    </div>
+    <div class="contador-wrap">
+      <div class="contador">
+        <span class="contador-num" id="usados">0</span>
+        <span class="contador-total">/6</span>
+      </div>
+      <div class="contador-label">días usados</div>
+    </div>
+  </div>
+
+  <div class="anyo-selector">
+    <button class="anyo-btn" onclick="cambiarAnyo(-1)">‹</button>
+    <span class="anyo-label" id="anyoNav">2025</span>
+    <button class="anyo-btn" onclick="cambiarAnyo(1)">›</button>
+  </div>
+</header>
+
+<div class="progreso-wrap">
+  <div class="progreso-track">
+    <div class="progreso-fill" id="progreso" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main>
+
+  <div class="alerta-agotado" id="alertaAgotado">
+    <span class="alerta-agotado-icon">⚠️</span>
+    <span class="alerta-agotado-texto">Has agotado todos tus días de asuntos propios este año.</span>
+  </div>
+
+  <button class="btn-añadir" onclick="abrirModal()">
+    <span class="btn-icon">+</span>
+    Registrar día de asunto propio
+  </button>
+
+  <div class="lista-titulo" id="listaTitulo" style="display:none">Días registrados</div>
+  <div class="lista" id="lista"></div>
+
+  <div class="vacio" id="vacio">
+    <div class="vacio-emoji">📬</div>
+    <div class="vacio-titulo">Sin registros aún</div>
+    <div class="vacio-sub">Pulsa el botón para registrar<br>tu primer día de asunto propio</div>
+  </div>
+
+</main>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="clickOverlay(event)">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-titulo">Nuevo día</div>
+
+    <div class="campo-grupo">
+      <label for="inputFecha">Fecha</label>
+      <input type="date" id="inputFecha" />
+    </div>
+
+    <div class="campo-grupo">
+      <label for="inputNota">Motivo <span style="font-weight:300;text-transform:none">(opcional)</span></label>
+      <textarea id="inputNota" placeholder="Ej: gestión médica, trámite personal…"></textarea>
+    </div>
+
+    <button class="btn-guardar" onclick="guardar()">Guardar</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const TOTAL = 6;
+  const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const DIAS_SEMANA = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+
+  let anyoActivo = new Date().getFullYear();
+
+  function claveStorage(anyo) {
+    return 'asuntos_' + anyo;
+  }
+
+  function cargarDatos(anyo) {
+    try {
+      return JSON.parse(localStorage.getItem(claveStorage(anyo))) || [];
+    } catch { return []; }
+  }
+
+  function guardarDatos(anyo, datos) {
+    localStorage.setItem(claveStorage(anyo), JSON.stringify(datos));
+  }
+
+  function renderizar() {
+    const datos = cargarDatos(anyoActivo);
+    const usados = datos.length;
+
+    document.getElementById('usados').textContent = usados;
+    document.getElementById('anyoLabel').textContent = anyoActivo;
+    document.getElementById('anyoNav').textContent = anyoActivo;
+    document.getElementById('progreso').style.width = Math.min(100, (usados / TOTAL) * 100) + '%';
+    document.getElementById('alertaAgotado').classList.toggle('visible', usados >= TOTAL);
+
+    const lista = document.getElementById('lista');
+    const vacio = document.getElementById('vacio');
+    const listaTitulo = document.getElementById('listaTitulo');
+
+    lista.innerHTML = '';
+
+    if (datos.length === 0) {
+      vacio.style.display = 'block';
+      listaTitulo.style.display = 'none';
+      return;
+    }
+
+    vacio.style.display = 'none';
+    listaTitulo.style.display = 'block';
+
+    // Ordenar por fecha descendente
+    const ordenados = [...datos].sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+    ordenados.forEach((item, idx) => {
+      const fecha = new Date(item.fecha + 'T12:00:00');
+      const dia = fecha.getDate();
+      const mes = MESES[fecha.getMonth()];
+      const semana = DIAS_SEMANA[fecha.getDay()];
+
+      const el = document.createElement('div');
+      el.className = 'item';
+      el.innerHTML = `
+        <div class="item-fecha-box">
+          <div class="item-dia">${dia}</div>
+          <div class="item-mes">${mes}</div>
+        </div>
+        <div class="item-body">
+          <div class="item-weekday">${semana} · ${fecha.getFullYear()}</div>
+          <div class="item-nota ${item.nota ? '' : 'vacia'}">${item.nota || 'Sin motivo'}</div>
+        </div>
+        <button class="btn-borrar" onclick="borrar('${item.id}')">×</button>
+      `;
+      lista.appendChild(el);
+    });
+  }
+
+  function abrirModal() {
+    const datos = cargarDatos(anyoActivo);
+    if (datos.length >= TOTAL) {
+      mostrarToast('Ya has usado todos los días disponibles 😅');
+      return;
+    }
+    // Poner fecha de hoy por defecto (en zona local)
+    const hoy = new Date();
+    const yyyy = hoy.getFullYear();
+    const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dd = String(hoy.getDate()).padStart(2, '0');
+    document.getElementById('inputFecha').value = `${yyyy}-${mm}-${dd}`;
+    document.getElementById('inputNota').value = '';
+    document.getElementById('overlay').classList.add('visible');
+    setTimeout(() => document.getElementById('inputNota').focus(), 350);
+  }
+
+  function cerrarModal() {
+    document.getElementById('overlay').classList.remove('visible');
+  }
+
+  function clickOverlay(e) {
+    if (e.target === document.getElementById('overlay')) cerrarModal();
+  }
+
+  function guardar() {
+    const fecha = document.getElementById('inputFecha').value;
+    const nota = document.getElementById('inputNota').value.trim();
+
+    if (!fecha) {
+      mostrarToast('Elige una fecha primero');
+      return;
+    }
+
+    const anyo = parseInt(fecha.split('-')[0]);
+    if (anyo !== anyoActivo) {
+      mostrarToast(`La fecha debe ser del año ${anyoActivo}`);
+      return;
+    }
+
+    const datos = cargarDatos(anyoActivo);
+
+    // Comprobar duplicado
+    if (datos.some(d => d.fecha === fecha)) {
+      mostrarToast('Ese día ya está registrado');
+      return;
+    }
+
+    datos.push({ id: Date.now().toString(), fecha, nota });
+    guardarDatos(anyoActivo, datos);
+    cerrarModal();
+    renderizar();
+    mostrarToast('¡Día registrado! 📬');
+  }
+
+  function borrar(id) {
+    if (!confirm('¿Borrar este registro?')) return;
+    const datos = cargarDatos(anyoActivo).filter(d => d.id !== id);
+    guardarDatos(anyoActivo, datos);
+    renderizar();
+    mostrarToast('Registro eliminado');
+  }
+
+  function cambiarAnyo(delta) {
+    anyoActivo += delta;
+    renderizar();
+  }
+
+  function mostrarToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // Init
+  renderizar();
+</script>
+</body>
+</html>
