@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Asuntos Propios" />
@@ -24,40 +25,19 @@
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--texto); min-height: 100dvh; padding-top: var(--safe-top); padding-bottom: calc(var(--safe-bottom) + 80px); overflow-x: hidden; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--texto);
-      min-height: 100dvh;
-      padding-top: var(--safe-top);
-      padding-bottom: calc(var(--safe-bottom) + 80px);
-      overflow-x: hidden;
-    }
-
-    header {
-      background: var(--amarillo);
-      padding: calc(var(--safe-top) + 20px) 24px 24px;
-      position: sticky; top: 0; z-index: 100;
-    }
-
+    header { background: var(--amarillo); padding: calc(var(--safe-top) + 20px) 24px 24px; position: sticky; top: 0; z-index: 100; }
     .header-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-    .header-izq { display: flex; flex-direction: column; }
-
     .header-titulo { font-family: 'DM Serif Display', serif; font-size: 28px; line-height: 1.1; color: #1A1A1A; }
     .header-sub { font-size: 13px; color: rgba(0,0,0,0.5); margin-top: 4px; font-weight: 400; }
+    .header-derecha { display: flex; align-items: flex-start; gap: 10px; }
 
-    .btn-config {
-      background: rgba(0,0,0,0.08); border: none; border-radius: 50%;
-      width: 36px; height: 36px; font-size: 16px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: 4px; -webkit-appearance: none; transition: background 0.15s;
-    }
+    .btn-config { background: rgba(0,0,0,0.08); border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px; transition: background 0.15s; }
     .btn-config:active { background: rgba(0,0,0,0.18); }
 
-    .contador-wrap { display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; }
+    .contador-wrap { display: flex; flex-direction: column; align-items: flex-end; }
     .contador { display: flex; align-items: baseline; gap: 3px; }
     .contador-num { font-family: 'DM Serif Display', serif; font-size: 52px; line-height: 1; color: var(--rojo); }
     .contador-total { font-size: 20px; color: rgba(0,0,0,0.35); font-family: 'DM Serif Display', serif; }
@@ -68,7 +48,7 @@
     .progreso-fill { height: 100%; background: var(--rojo); border-radius: 99px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
 
     .anyo-selector { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 12px 0 0; }
-    .anyo-btn { background: none; border: none; font-size: 22px; color: var(--texto); cursor: pointer; padding: 4px 8px; opacity: 0.5; transition: opacity 0.15s; -webkit-appearance: none; }
+    .anyo-btn { background: none; border: none; font-size: 22px; color: var(--texto); cursor: pointer; padding: 4px 8px; opacity: 0.5; transition: opacity 0.15s; }
     .anyo-btn:active { opacity: 1; }
     .anyo-label { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--texto); min-width: 60px; text-align: center; }
 
@@ -82,17 +62,11 @@
     .conectado .estado-dot    { background: #4CAF50; }
     .desconectado .estado-dot { background: #FF9800; }
     .cargando .estado-dot     { background: #9E9E9E; animation: pulsar 1s infinite; }
-    @keyframes pulsar { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    @keyframes pulsar { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-    .btn-añadir {
-      background: var(--texto); color: #fff; border: none; border-radius: var(--radio);
-      padding: 18px 24px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600;
-      width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
-      cursor: pointer; box-shadow: var(--sombra); transition: transform 0.15s, opacity 0.15s; -webkit-appearance: none;
-    }
+    .btn-añadir { background: var(--texto); color: #fff; border: none; border-radius: var(--radio); padding: 18px 24px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: var(--sombra); transition: transform 0.15s, opacity 0.15s; }
     .btn-añadir:active   { transform: scale(0.97); opacity: 0.85; }
     .btn-añadir:disabled { opacity: 0.4; cursor: not-allowed; }
-
     .btn-icon { width: 26px; height: 26px; background: var(--amarillo); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; line-height: 1; color: #1A1A1A; flex-shrink: 0; }
 
     .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
@@ -102,33 +76,21 @@
     .sheet-handle { width: 36px; height: 4px; background: var(--borde); border-radius: 99px; margin: 0 auto 24px; }
     .sheet-titulo { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 24px; }
     .campo-grupo { margin-bottom: 18px; }
-
     label { font-size: 13px; font-weight: 600; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 8px; }
 
-    input[type="date"], input[type="text"], textarea {
-      width: 100%; background: var(--surface2); border: 2px solid transparent; border-radius: 14px;
-      padding: 14px 16px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--texto);
-      outline: none; transition: border-color 0.2s; -webkit-appearance: none; appearance: none;
-    }
+    input[type="date"], input[type="text"], textarea { width: 100%; background: var(--surface2); border: 2px solid transparent; border-radius: 14px; padding: 14px 16px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--texto); outline: none; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; }
     input:focus, textarea:focus { border-color: var(--amarillo); }
     textarea { resize: none; height: 90px; }
+    .campo-ayuda { font-size: 12px; color: var(--texto-suave); margin-top: 6px; line-height: 1.5; }
 
-    .campo-ayuda { font-size: 12px; color: var(--texto-suave); margin-top: 6px; line-height: 1.4; }
-
-    .btn-guardar {
-      background: var(--amarillo); color: var(--texto); border: none; border-radius: 14px;
-      padding: 17px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700;
-      width: 100%; cursor: pointer; margin-top: 6px; transition: transform 0.15s, opacity 0.15s; -webkit-appearance: none;
-    }
+    .btn-guardar { background: var(--amarillo); color: var(--texto); border: none; border-radius: 14px; padding: 17px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 6px; transition: transform 0.15s, opacity 0.15s; }
     .btn-guardar:active   { transform: scale(0.97); opacity: 0.85; }
     .btn-guardar:disabled { opacity: 0.5; cursor: not-allowed; }
 
     .lista-titulo { font-size: 13px; font-weight: 600; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 4px; }
     .lista { display: flex; flex-direction: column; gap: 10px; }
-
     .item { background: var(--surface); border-radius: var(--radio); padding: 16px 18px; display: flex; align-items: flex-start; gap: 14px; box-shadow: var(--sombra); animation: entrar 0.3s cubic-bezier(.4,0,.2,1) both; }
-    @keyframes entrar { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
+    @keyframes entrar { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
     .item-fecha-box { background: var(--amarillo); border-radius: 12px; padding: 8px 10px; text-align: center; flex-shrink: 0; min-width: 48px; }
     .item-dia { font-family: 'DM Serif Display', serif; font-size: 22px; line-height: 1; color: #1A1A1A; }
     .item-mes { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(0,0,0,0.5); margin-top: 2px; }
@@ -136,8 +98,7 @@
     .item-weekday { font-size: 12px; color: var(--texto-suave); margin-bottom: 2px; }
     .item-nota { font-size: 15px; font-weight: 500; color: var(--texto); word-break: break-word; }
     .item-nota.vacia { color: var(--texto-suave); font-style: italic; font-weight: 400; }
-
-    .btn-borrar { background: none; border: none; padding: 4px; cursor: pointer; color: var(--borde); font-size: 20px; line-height: 1; flex-shrink: 0; transition: color 0.15s; -webkit-appearance: none; }
+    .btn-borrar { background: none; border: none; padding: 4px; cursor: pointer; color: var(--borde); font-size: 20px; line-height: 1; flex-shrink: 0; transition: color 0.15s; }
     .btn-borrar:active { color: var(--rojo); }
 
     .vacio { text-align: center; padding: 48px 24px; color: var(--texto-suave); }
@@ -158,12 +119,12 @@
 
 <header>
   <div class="header-inner">
-    <div class="header-izq">
+    <div>
       <div class="header-titulo">Asuntos<br>Propios</div>
       <div class="header-sub">Correos · <span id="anyoLabel">2026</span></div>
     </div>
-    <div style="display:flex;align-items:flex-start;gap:10px">
-      <button class="btn-config" onclick="abrirConfig()" title="Configurar NAS">⚙️</button>
+    <div class="header-derecha">
+      <button class="btn-config" id="btnConfig" title="Configurar NAS">⚙️</button>
       <div class="contador-wrap">
         <div class="contador">
           <span class="contador-num" id="usados">0</span>
@@ -174,9 +135,9 @@
     </div>
   </div>
   <div class="anyo-selector">
-    <button class="anyo-btn" onclick="cambiarAnyo(-1)">‹</button>
+    <button id="btnAnyoMenos">‹</button>
     <span class="anyo-label" id="anyoNav">2026</span>
-    <button class="anyo-btn" onclick="cambiarAnyo(1)">›</button>
+    <button id="btnAnyoMas">›</button>
   </div>
 </header>
 
@@ -197,7 +158,7 @@
     <span class="alerta-agotado-texto">Has agotado todos tus días de asuntos propios este año.</span>
   </div>
 
-  <button class="btn-añadir" onclick="abrirModal()">
+  <button class="btn-añadir" id="btnAñadir">
     <span class="btn-icon">+</span>
     Registrar día de asunto propio
   </button>
@@ -213,7 +174,7 @@
 </main>
 
 <!-- MODAL NUEVO DÍA -->
-<div class="overlay" id="overlay" onclick="clickOverlay(event)">
+<div class="overlay" id="overlay">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-titulo">Nuevo día</div>
@@ -225,24 +186,24 @@
       <label for="inputNota">Motivo <span style="font-weight:300;text-transform:none">(opcional)</span></label>
       <textarea id="inputNota" placeholder="Ej: gestión médica, trámite personal…"></textarea>
     </div>
-    <button class="btn-guardar" id="btnGuardar" onclick="guardar()">Guardar</button>
+    <button class="btn-guardar" id="btnGuardar">Guardar</button>
   </div>
 </div>
 
 <!-- MODAL CONFIGURACIÓN -->
-<div class="overlay" id="overlayConfig" onclick="clickOverlayConfig(event)">
+<div class="overlay" id="overlayConfig">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-titulo">Configuración</div>
     <div class="campo-grupo">
       <label for="inputUrl">URL del NAS (PocketBase)</label>
-      <input type="text" id="inputUrl" placeholder="https://tu-nas:8090" autocapitalize="none" autocorrect="off" spellcheck="false" />
+      <input type="text" id="inputUrl" placeholder="https://tu-NAS:8090" autocapitalize="none" autocorrect="off" spellcheck="false" />
       <div class="campo-ayuda">
-        Ejemplo: https://tu-NAS.tailxxxx.ts.net:8090<br>
+        Ejemplo: https://tu-NAS:puerto<br>
         Solo se guarda en este dispositivo, nunca en GitHub. 🔒
       </div>
     </div>
-    <button class="btn-guardar" onclick="guardarConfig()">Guardar y conectar</button>
+    <button class="btn-guardar" id="btnGuardarConfig">Guardar y conectar</button>
   </div>
 </div>
 
@@ -252,7 +213,6 @@
   const COLECCION = 'Asuntos';
   const TOTAL = 6;
   const STORAGE_KEY = 'pb_url';
-
   const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
   const DIAS_SEMANA = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 
@@ -260,73 +220,84 @@
   let datos = [];
   let conectado = false;
 
-  function getPbUrl() {
-    return localStorage.getItem(STORAGE_KEY) || '';
-  }
+  function getPbUrl() { return localStorage.getItem(STORAGE_KEY) || ''; }
+
+  // ── Eventos (sin onclick en HTML) ──────────────────────────
+  document.getElementById('btnConfig').addEventListener('click', abrirConfig);
+  document.getElementById('btnAñadir').addEventListener('click', abrirModal);
+  document.getElementById('btnGuardar').addEventListener('click', guardar);
+  document.getElementById('btnGuardarConfig').addEventListener('click', guardarConfig);
+  document.getElementById('btnAnyoMenos').addEventListener('click', function(){ cambiarAnyo(-1); });
+  document.getElementById('btnAnyoMas').addEventListener('click', function(){ cambiarAnyo(1); });
+
+  document.getElementById('overlay').addEventListener('click', function(e){
+    if (e.target === this) cerrarModal();
+  });
+  document.getElementById('overlayConfig').addEventListener('click', function(e){
+    if (e.target === this) cerrarConfig();
+  });
 
   // ── API ────────────────────────────────────────────────────
-
   async function cargarDatos() {
     const pbUrl = getPbUrl();
     if (!pbUrl) {
       setEstado('desconectado', 'Configura la URL del NAS ⚙️');
       datos = []; renderizar();
-      setTimeout(() => abrirConfig(), 600);
+      setTimeout(abrirConfig, 600);
       return;
     }
     setEstado('cargando', 'Conectando con el NAS...');
     try {
-      const inicio = `${anyoActivo}-01-01 00:00:00`;
-      const fin    = `${anyoActivo}-12-31 23:59:59`;
-      const url = `${pbUrl}/api/collections/${COLECCION}/records?filter=(fecha>='${inicio}'%26%26fecha<='${fin}')&sort=-fecha&perPage=50`;
+      const inicio = anyoActivo + '-01-01 00:00:00';
+      const fin    = anyoActivo + '-12-31 23:59:59';
+      const url = pbUrl + '/api/collections/' + COLECCION + '/records?filter=(fecha%3E%3D%22' + encodeURIComponent(inicio) + '%22%26%26fecha%3C%3D%22' + encodeURIComponent(fin) + '%22)&sort=-fecha&perPage=50';
       const res = await fetch(url);
       if (!res.ok) throw new Error('Error ' + res.status);
       const json = await res.json();
       datos = json.items || [];
       conectado = true;
-      setEstado('conectado', `NAS conectado · ${datos.length} registro${datos.length !== 1 ? 's' : ''}`);
+      setEstado('conectado', 'NAS conectado · ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : ''));
       renderizar();
     } catch (e) {
       conectado = false;
-      setEstado('desconectado', 'Sin conexión · ¿Tailscale activo? ⚙️');
+      setEstado('desconectado', 'Sin conexión · ¿Tailscale activo?');
       datos = []; renderizar();
     }
   }
 
   async function crearRegistro(fecha, nota) {
-    const res = await fetch(`${getPbUrl()}/api/collections/${COLECCION}/records`, {
+    const res = await fetch(getPbUrl() + '/api/collections/' + COLECCION + '/records', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fecha: fecha + ' 00:00:00', nota })
+      body: JSON.stringify({ fecha: fecha + ' 00:00:00', nota: nota })
     });
     if (!res.ok) throw new Error('Error al guardar');
     return await res.json();
   }
 
   async function borrarRegistro(id) {
-    const res = await fetch(`${getPbUrl()}/api/collections/${COLECCION}/records/${id}`, { method: 'DELETE' });
+    const res = await fetch(getPbUrl() + '/api/collections/' + COLECCION + '/records/' + id, { method: 'DELETE' });
     if (!res.ok) throw new Error('Error al borrar');
   }
 
   // ── UI ─────────────────────────────────────────────────────
-
   function setEstado(tipo, texto) {
-    const el = document.getElementById('estadoConexion');
+    var el = document.getElementById('estadoConexion');
     el.className = 'estado-conexion ' + tipo;
     document.getElementById('estadoTexto').textContent = texto;
   }
 
   function renderizar() {
-    const usados = datos.length;
+    var usados = datos.length;
     document.getElementById('usados').textContent = usados;
     document.getElementById('anyoLabel').textContent = anyoActivo;
     document.getElementById('anyoNav').textContent = anyoActivo;
     document.getElementById('progreso').style.width = Math.min(100, (usados / TOTAL) * 100) + '%';
     document.getElementById('alertaAgotado').classList.toggle('visible', usados >= TOTAL);
 
-    const lista = document.getElementById('lista');
-    const vacio = document.getElementById('vacio');
-    const listaTitulo = document.getElementById('listaTitulo');
+    var lista = document.getElementById('lista');
+    var vacio = document.getElementById('vacio');
+    var listaTitulo = document.getElementById('listaTitulo');
     lista.innerHTML = '';
 
     if (datos.length === 0) {
@@ -337,56 +308,57 @@
     vacio.style.display = 'none';
     listaTitulo.style.display = 'block';
 
-    datos.forEach(item => {
-      const fechaStr = item.fecha.substring(0, 10);
-      const fecha = new Date(fechaStr + 'T12:00:00');
-      const el = document.createElement('div');
+    datos.forEach(function(item) {
+      var fechaStr = item.fecha.substring(0, 10);
+      var fecha = new Date(fechaStr + 'T12:00:00');
+      var el = document.createElement('div');
       el.className = 'item';
-      el.innerHTML = `
-        <div class="item-fecha-box">
-          <div class="item-dia">${fecha.getDate()}</div>
-          <div class="item-mes">${MESES[fecha.getMonth()]}</div>
-        </div>
-        <div class="item-body">
-          <div class="item-weekday">${DIAS_SEMANA[fecha.getDay()]} · ${fecha.getFullYear()}</div>
-          <div class="item-nota ${item.nota ? '' : 'vacia'}">${item.nota || 'Sin motivo'}</div>
-        </div>
-        <button class="btn-borrar" onclick="borrar('${item.id}')">×</button>
-      `;
+      el.innerHTML =
+        '<div class="item-fecha-box">' +
+          '<div class="item-dia">' + fecha.getDate() + '</div>' +
+          '<div class="item-mes">' + MESES[fecha.getMonth()] + '</div>' +
+        '</div>' +
+        '<div class="item-body">' +
+          '<div class="item-weekday">' + DIAS_SEMANA[fecha.getDay()] + ' · ' + fecha.getFullYear() + '</div>' +
+          '<div class="item-nota ' + (item.nota ? '' : 'vacia') + '">' + (item.nota || 'Sin motivo') + '</div>' +
+        '</div>' +
+        '<button class="btn-borrar" data-id="' + item.id + '">×</button>';
+      el.querySelector('.btn-borrar').addEventListener('click', function() {
+        borrar(this.getAttribute('data-id'));
+      });
       lista.appendChild(el);
     });
   }
 
-  // ── MODALES ────────────────────────────────────────────────
-
+  // ── Modal nuevo día ────────────────────────────────────────
   function abrirModal() {
     if (!conectado) { mostrarToast('Sin conexión con el NAS 📡'); return; }
     if (datos.length >= TOTAL) { mostrarToast('Ya has usado todos los días disponibles 😅'); return; }
-    const hoy = new Date();
-    document.getElementById('inputFecha').value = `${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
+    var hoy = new Date();
+    document.getElementById('inputFecha').value =
+      hoy.getFullYear() + '-' + String(hoy.getMonth()+1).padStart(2,'0') + '-' + String(hoy.getDate()).padStart(2,'0');
     document.getElementById('inputNota').value = '';
     document.getElementById('overlay').classList.add('visible');
-    setTimeout(() => document.getElementById('inputNota').focus(), 350);
+    setTimeout(function(){ document.getElementById('inputNota').focus(); }, 350);
   }
 
   function cerrarModal() { document.getElementById('overlay').classList.remove('visible'); }
-  function clickOverlay(e) { if (e.target === document.getElementById('overlay')) cerrarModal(); }
 
   async function guardar() {
-    const fecha = document.getElementById('inputFecha').value;
-    const nota  = document.getElementById('inputNota').value.trim();
+    var fecha = document.getElementById('inputFecha').value;
+    var nota  = document.getElementById('inputNota').value.trim();
     if (!fecha) { mostrarToast('Elige una fecha primero'); return; }
-    if (parseInt(fecha.split('-')[0]) !== anyoActivo) { mostrarToast(`La fecha debe ser del año ${anyoActivo}`); return; }
-    if (datos.some(d => d.fecha.startsWith(fecha))) { mostrarToast('Ese día ya está registrado'); return; }
+    if (parseInt(fecha.split('-')[0]) !== anyoActivo) { mostrarToast('La fecha debe ser del año ' + anyoActivo); return; }
+    if (datos.some(function(d){ return d.fecha.startsWith(fecha); })) { mostrarToast('Ese día ya está registrado'); return; }
 
-    const btn = document.getElementById('btnGuardar');
+    var btn = document.getElementById('btnGuardar');
     btn.disabled = true; btn.textContent = 'Guardando...';
     try {
       await crearRegistro(fecha, nota);
       cerrarModal();
       await cargarDatos();
       mostrarToast('¡Día registrado! 📬');
-    } catch (e) {
+    } catch(e) {
       mostrarToast('Error al guardar, revisa la conexión');
     } finally {
       btn.disabled = false; btn.textContent = 'Guardar';
@@ -399,7 +371,40 @@
       await borrarRegistro(id);
       await cargarDatos();
       mostrarToast('Registro eliminado');
-    } catch (e) {
+    } catch(e) {
       mostrarToast('Error al borrar');
     }
   }
+
+  // ── Modal configuración ────────────────────────────────────
+  function abrirConfig() {
+    document.getElementById('inputUrl').value = getPbUrl();
+    document.getElementById('overlayConfig').classList.add('visible');
+    setTimeout(function(){ document.getElementById('inputUrl').focus(); }, 350);
+  }
+
+  function cerrarConfig() { document.getElementById('overlayConfig').classList.remove('visible'); }
+
+  function guardarConfig() {
+    var url = document.getElementById('inputUrl').value.trim();
+    if (!url) { mostrarToast('Introduce la URL del NAS'); return; }
+    if (url.endsWith('/')) url = url.slice(0, -1);
+    localStorage.setItem(STORAGE_KEY, url);
+    cerrarConfig();
+    mostrarToast('URL guardada, conectando...');
+    cargarDatos();
+  }
+
+  function cambiarAnyo(delta) { anyoActivo += delta; cargarDatos(); }
+
+  function mostrarToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); }, 2500);
+  }
+
+  // ── Inicio ─────────────────────────────────────────────────
+  cargarDatos();
+</script>
+</body>
+</html>
