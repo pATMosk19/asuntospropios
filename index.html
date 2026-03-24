@@ -245,8 +245,10 @@ function crearRegistro(fecha, nota) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ fecha: fecha ? fecha + ' 00:00:00.000Z' : '', nota: nota })
   }).then(function(res) {
-    if (!res.ok) throw new Error('Error al guardar');
-    return res.json();
+    return res.json().then(function(data) {
+      if (!res.ok) throw new Error('PB error ' + res.status + ': ' + JSON.stringify(data));
+      return data;
+    });
   });
 }
 
@@ -334,8 +336,8 @@ function guardar() {
       cargarDatos();
       mostrarToast('Dia registrado!');
     })
-    .catch(function() {
-      mostrarToast('Error al guardar, revisa la conexion');
+    .catch(function(err) {
+      mostrarToast('Error: ' + (err.message || 'revisa la conexion'));
     })
     .finally(function() {
       btn.disabled = false; btn.textContent = 'Guardar';
