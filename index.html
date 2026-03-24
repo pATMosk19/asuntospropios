@@ -215,7 +215,7 @@ function cargarDatos() {
     return;
   }
   setEstado('cargando', 'Conectando con el NAS...');
-  fetch(pbUrl + '/api/collections/' + COLECCION + '/records?perPage=200')
+  fetch(pbUrl + '/api/collections/' + COLECCION + '/records?perPage=200&sort=-created&_=' + Date.now())
     .then(function(res) {
       if (!res.ok) throw new Error('Error ' + res.status);
       return res.json();
@@ -228,7 +228,8 @@ function cargarDatos() {
         return f && f.indexOf(String(anyoActivo)) >= 0;
       });
       conectado = true;
-      setEstado('conectado', 'NAS conectado · ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : ''));
+      var msgTotal = todos.length !== datos.length ? ' (' + todos.length + ' total)' : '';
+      setEstado('conectado', 'NAS conectado · ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : '') + ' ' + anyoActivo + msgTotal);
       renderizar();
     })
     .catch(function() {
@@ -242,7 +243,7 @@ function crearRegistro(fecha, nota) {
   return fetch(getPbUrl() + '/api/collections/' + COLECCION + '/records', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fecha: fecha + ' 00:00:00.000Z', nota: nota })
+    body: JSON.stringify({ fecha: fecha ? fecha + ' 00:00:00.000Z' : '', nota: nota })
   }).then(function(res) {
     if (!res.ok) throw new Error('Error al guardar');
     return res.json();
