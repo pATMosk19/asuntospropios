@@ -1,0 +1,21 @@
+name: Deploy con secretos
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Inyectar URL del NAS
+        run: |
+          sed -i "s|__PB_URL__|${{ secrets.PB_URL }}|g" index.html
+
+      - name: Publicar en GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
