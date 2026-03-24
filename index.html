@@ -215,7 +215,7 @@ function cargarDatos() {
     return;
   }
   setEstado('cargando', 'Conectando con el NAS...');
-  fetch(pbUrl + '/api/collections/' + COLECCION + '/records?perPage=200')
+  fetch(pbUrl + '/api/collections/' + COLECCION + '/records?sort=-fecha&perPage=200')
     .then(function(res) {
       if (!res.ok) throw new Error('Error ' + res.status);
       return res.json();
@@ -328,9 +328,11 @@ function guardar() {
   var btn = document.getElementById('btnGuardar');
   btn.disabled = true; btn.textContent = 'Guardando...';
   crearRegistro(fecha, nota)
-    .then(function() {
+    .then(function(nuevoRegistro) {
+      datos.push(nuevoRegistro);
       cerrarModal();
-      cargarDatos();
+      renderizar();
+      setEstado('conectado', 'NAS conectado · ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : ''));
       mostrarToast('Dia registrado!');
     })
     .catch(function() {
