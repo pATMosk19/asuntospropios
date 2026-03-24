@@ -195,6 +195,15 @@ var conectado = false;
 
 function getPbUrl() { return localStorage.getItem(STORAGE_KEY) || ''; }
 
+// Cache local por año (evita perder datos cuando PocketBase no devuelve la lista)
+function getCacheKey() { return 'ap_datos_' + anyoActivo; }
+function guardarCache() {
+  try { localStorage.setItem(getCacheKey(), JSON.stringify(datos)); } catch(e) {}
+}
+function restaurarCache() {
+  try { return JSON.parse(localStorage.getItem(getCacheKey()) || '[]'); } catch(e) { return []; }
+}
+
 // Eventos
 document.getElementById('btnConfig').addEventListener('click', abrirConfig);
 document.getElementById('btnAnyadir').addEventListener('click', abrirModal);
@@ -210,10 +219,15 @@ function cargarDatos() {
   var pbUrl = getPbUrl();
   if (!pbUrl) {
     setEstado('desconectado', 'Configura la URL del NAS');
-    datos = []; renderizar();
+    datos = restaurarCache(); renderizar();
     setTimeout(abrirConfig, 600);
     return;
   }
+
+  // Mostrar caché inmediatamente para feedback instantáneo
+  var cache = restaurarCache();
+  if (cache.length > 0) { datos = cache; renderizar(); }
+
   setEstado('cargando', 'Conectando con el NAS...');
   fetch(pbUrl + '/api/collections/' + COLECCION + '/records?sort=-fecha&perPage=200')
     .then(function(res) {
@@ -222,11 +236,16 @@ function cargarDatos() {
     })
     .then(function(json) {
       var todos = json.items || [];
-      // Filtrar por año en el cliente usando el campo 'created' si 'fecha' está vacío
-      datos = todos.filter(function(item) {
+      var filtrados = todos.filter(function(item) {
         var f = (item.fecha && item.fecha.length > 4) ? item.fecha : item.created;
         return f && f.indexOf(String(anyoActivo)) >= 0;
       });
+      // Solo sobreescribir si PocketBase devuelve datos; si devuelve 0 (regla de List con auth),
+      // conservamos la caché local para no perder registros
+      if (filtrados.length > 0) {
+        datos = filtrados;
+        guardarCache();
+      }
       conectado = true;
       setEstado('conectado', 'NAS conectado · ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : ''));
       renderizar();
@@ -234,7 +253,7 @@ function cargarDatos() {
     .catch(function() {
       conectado = false;
       setEstado('desconectado', 'Sin conexion · Tailscale activo?');
-      datos = []; renderizar();
+      datos = restaurarCache(); renderizar();
     });
 }
 
@@ -264,6 +283,10 @@ function setEstado(tipo, texto) {
   document.getElementById('estadoTexto').textContent = texto;
 }
 
+function actualizarEstadoConexion() {
+  setEstado('conectado', 'NAS conectado · ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : ''));
+}
+
 function renderizar() {
   var usados = datos.length;
   document.getElementById('usados').textContent = usados;
@@ -283,8 +306,10 @@ function renderizar() {
   vacio.style.display = 'none';
   listaTitulo.style.display = 'block';
   datos.forEach(function(item) {
-    var fechaStr = (item.fecha && item.fecha.length > 4) ? item.fecha.substring(0,10) : item.created.substring(0,10);
+    var fechaRaw = (item.fecha && item.fecha.length > 4) ? item.fecha : (item.created || '');
+    var fechaStr = fechaRaw.substring(0, 10);
     var fecha = new Date(fechaStr + 'T12:00:00');
+    if (isNaN(fecha.getTime())) return; // skip registro con fecha inválida
     var el = document.createElement('div');
     el.className = 'item';
     el.innerHTML =
@@ -329,10 +354,11 @@ function guardar() {
   btn.disabled = true; btn.textContent = 'Guardando...';
   crearRegistro(fecha, nota)
     .then(function(nuevoRegistro) {
-      datos.push(nuevoRegistro);
+      datos.unshift(nuevoRegistro); // añadir al principio (más reciente primero)
+      guardarCache();
       cerrarModal();
       renderizar();
-      setEstado('conectado', 'NAS conectado · ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : ''));
+      actualizarEstadoConexion();
       mostrarToast('Dia registrado!');
     })
     .catch(function() {
@@ -346,7 +372,13 @@ function guardar() {
 function borrar(id) {
   if (!confirm('Borrar este registro?')) return;
   borrarRegistro(id)
-    .then(function() { cargarDatos(); mostrarToast('Registro eliminado'); })
+    .then(function() {
+      datos = datos.filter(function(d) { return d.id !== id; });
+      guardarCache();
+      renderizar();
+      actualizarEstadoConexion();
+      mostrarToast('Registro eliminado');
+    })
     .catch(function() { mostrarToast('Error al borrar'); });
 }
 
@@ -368,7 +400,7 @@ function guardarConfig() {
   cargarDatos();
 }
 
-function cambiarAnyo(delta) { anyoActivo += delta; cargarDatos(); }
+function cambiarAnyo(delta) { anyoActivo += delta; datos = []; cargarDatos(); }
 
 function mostrarToast(msg) {
   var t = document.getElementById('toast');
