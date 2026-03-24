@@ -242,7 +242,7 @@ function crearRegistro(fecha, nota) {
   return fetch(getPbUrl() + '/api/collections/' + COLECCION + '/records', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fecha: fecha + ' 00:00:00.000Z', nota: nota })
+    body: JSON.stringify({ fecha: fecha ? fecha + ' 00:00:00.000Z' : '', nota: nota })
   }).then(function(res) {
     if (!res.ok) throw new Error('Error al guardar');
     return res.json();
