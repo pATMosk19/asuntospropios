@@ -12,13 +12,23 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --amarillo: #F5C800; --rojo: #D0021B; --bg: #FAFAF7; --surface: #FFFFFF;
-      --surface2: #F2F2EE; --texto: #1A1A1A; --texto-suave: #6B6B6B;
-      --borde: #E8E8E2; --sombra: 0 2px 16px rgba(0,0,0,0.07); --radio: 20px;
-      --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --amarillo: #F5C800;
+      --rojo: #D0021B;
+      --bg: #FAFAF7;
+      --surface: #FFFFFF;
+      --surface2: #F2F2EE;
+      --texto: #1A1A1A;
+      --texto-suave: #6B6B6B;
+      --borde: #E8E8E2;
+      --sombra: 0 2px 16px rgba(0,0,0,0.07);
+      --radio: 20px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--texto); min-height: 100dvh; padding-top: var(--safe-top); padding-bottom: calc(var(--safe-bottom) + 80px); overflow-x: hidden; }
+
+    /* CABECERA */
     header { background: var(--amarillo); padding: calc(var(--safe-top) + 20px) 24px 24px; position: sticky; top: 0; z-index: 100; }
     .header-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
     .header-titulo { font-family: 'DM Serif Display', serif; font-size: 28px; line-height: 1.1; color: #1A1A1A; }
@@ -31,14 +41,22 @@
     .contador-num { font-family: 'DM Serif Display', serif; font-size: 52px; line-height: 1; color: var(--rojo); }
     .contador-total { font-size: 20px; color: rgba(0,0,0,0.35); font-family: 'DM Serif Display', serif; }
     .contador-label { font-size: 11px; color: rgba(0,0,0,0.45); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; font-weight: 500; }
+
+    /* PROGRESO */
     .progreso-wrap { background: var(--amarillo); padding: 0 24px 20px; }
     .progreso-track { background: rgba(0,0,0,0.12); border-radius: 99px; height: 8px; overflow: hidden; }
     .progreso-fill { height: 100%; background: var(--rojo); border-radius: 99px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+
+    /* SELECTOR AÑO */
     .anyo-selector { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 12px 0 0; }
     .anyo-btn { background: none; border: none; font-size: 22px; color: var(--texto); cursor: pointer; padding: 4px 8px; opacity: 0.5; transition: opacity 0.15s; }
     .anyo-btn:active { opacity: 1; }
     .anyo-label { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--texto); min-width: 60px; text-align: center; }
+
+    /* MAIN */
     main { padding: 24px 16px 0; display: flex; flex-direction: column; gap: 20px; }
+
+    /* ESTADO CONEXION */
     .estado-conexion { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; font-size: 13px; font-weight: 500; }
     .estado-conexion.conectado    { background: #E8F5E9; color: #2E7D32; }
     .estado-conexion.desconectado { background: #FFF3E0; color: #E65100; }
@@ -48,10 +66,13 @@
     .desconectado .estado-dot { background: #FF9800; }
     .cargando .estado-dot     { background: #9E9E9E; animation: pulsar 1s infinite; }
     @keyframes pulsar { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* BOTON AÑADIR */
     .btn-anyadir { background: var(--texto); color: #fff; border: none; border-radius: var(--radio); padding: 18px 24px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: var(--sombra); transition: transform 0.15s, opacity 0.15s; }
-    .btn-anyadir:active   { transform: scale(0.97); opacity: 0.85; }
-    .btn-anyadir:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-anyadir:active { transform: scale(0.97); opacity: 0.85; }
     .btn-icon { width: 26px; height: 26px; background: var(--amarillo); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; line-height: 1; color: #1A1A1A; flex-shrink: 0; }
+
+    /* OVERLAYS */
     .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
     .overlay.visible { opacity: 1; pointer-events: all; }
     .sheet { background: var(--surface); border-radius: 24px 24px 0 0; padding: 12px 24px calc(var(--safe-bottom) + 32px); width: 100%; transform: translateY(100%); transition: transform 0.3s cubic-bezier(.4,0,.2,1); }
@@ -65,8 +86,10 @@
     textarea { resize: none; height: 90px; }
     .campo-ayuda { font-size: 12px; color: var(--texto-suave); margin-top: 6px; line-height: 1.5; }
     .btn-guardar { background: var(--amarillo); color: var(--texto); border: none; border-radius: 14px; padding: 17px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 6px; transition: transform 0.15s, opacity 0.15s; }
-    .btn-guardar:active   { transform: scale(0.97); opacity: 0.85; }
+    .btn-guardar:active { transform: scale(0.97); opacity: 0.85; }
     .btn-guardar:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* LISTA */
     .lista-titulo { font-size: 13px; font-weight: 600; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 4px; }
     .lista { display: flex; flex-direction: column; gap: 10px; }
     .item { background: var(--surface); border-radius: var(--radio); padding: 16px 18px; display: flex; align-items: flex-start; gap: 14px; box-shadow: var(--sombra); animation: entrar 0.3s cubic-bezier(.4,0,.2,1) both; }
@@ -80,14 +103,19 @@
     .item-nota.vacia { color: var(--texto-suave); font-style: italic; font-weight: 400; }
     .btn-borrar { background: none; border: none; padding: 4px; cursor: pointer; color: var(--borde); font-size: 20px; line-height: 1; flex-shrink: 0; transition: color 0.15s; }
     .btn-borrar:active { color: var(--rojo); }
+
+    /* VACIO */
     .vacio { text-align: center; padding: 48px 24px; color: var(--texto-suave); }
     .vacio-emoji { font-size: 48px; margin-bottom: 12px; }
     .vacio-titulo { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--texto); margin-bottom: 6px; }
     .vacio-sub { font-size: 14px; line-height: 1.5; }
+
+    /* ALERTA */
     .alerta-agotado { background: #FFF0F0; border: 2px solid var(--rojo); border-radius: var(--radio); padding: 16px 18px; align-items: center; gap: 12px; display: none; }
     .alerta-agotado.visible { display: flex; }
-    .alerta-agotado-icon { font-size: 24px; }
     .alerta-agotado-texto { font-size: 14px; font-weight: 500; color: var(--rojo); }
+
+    /* TOAST */
     .toast { position: fixed; bottom: calc(var(--safe-bottom) + 24px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--texto); color: #fff; padding: 12px 20px; border-radius: 99px; font-size: 14px; font-weight: 500; white-space: nowrap; opacity: 0; transition: opacity 0.25s, transform 0.25s; z-index: 500; pointer-events: none; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
@@ -107,7 +135,7 @@
           <span class="contador-num" id="usados">0</span>
           <span class="contador-total">/6</span>
         </div>
-        <div class="contador-label">días usados</div>
+        <div class="contador-label">dias usados</div>
       </div>
     </div>
   </div>
@@ -129,20 +157,23 @@
     <div class="estado-dot"></div>
     <span id="estadoTexto">Conectando con el NAS...</span>
   </div>
+
   <div class="alerta-agotado" id="alertaAgotado">
-    <span class="alerta-agotado-icon">&#9888;&#65039;</span>
-    <span class="alerta-agotado-texto">Has agotado todos tus días de asuntos propios este año.</span>
+    <span class="alerta-agotado-texto">&#9888;&#65039; Has agotado todos tus dias de asuntos propios este anno.</span>
   </div>
+
   <button class="btn-anyadir" id="btnAnyadir">
     <span class="btn-icon">+</span>
-    Registrar día de asunto propio
+    Registrar dia de asunto propio
   </button>
-  <div class="lista-titulo" id="listaTitulo" style="display:none">Días registrados</div>
+
+  <div class="lista-titulo" id="listaTitulo" style="display:none">Dias registrados</div>
   <div class="lista" id="lista"></div>
+
   <div class="vacio" id="vacio">
     <div class="vacio-emoji">&#128204;</div>
-    <div class="vacio-titulo">Sin registros aún</div>
-    <div class="vacio-sub">Pulsa el botón para registrar<br>tu primer día de asunto propio</div>
+    <div class="vacio-titulo">Sin registros aun</div>
+    <div class="vacio-sub">Pulsa el boton para registrar<br>tu primer dia de asunto propio</div>
   </div>
 </main>
 
@@ -150,14 +181,14 @@
 <div class="overlay" id="overlay">
   <div class="sheet">
     <div class="sheet-handle"></div>
-    <div class="sheet-titulo">Nuevo día</div>
+    <div class="sheet-titulo">Nuevo dia</div>
     <div class="campo-grupo">
       <label for="inputFecha">Fecha</label>
       <input type="date" id="inputFecha" />
     </div>
     <div class="campo-grupo">
       <label for="inputNota">Motivo <span style="font-weight:300;text-transform:none">(opcional)</span></label>
-      <textarea id="inputNota" placeholder="Ej: gestión médica, trámite personal..."></textarea>
+      <textarea id="inputNota" placeholder="Ej: gestion medica, tramite personal..."></textarea>
     </div>
     <button class="btn-guardar" id="btnGuardar">Guardar</button>
   </div>
@@ -167,13 +198,13 @@
 <div class="overlay" id="overlayConfig">
   <div class="sheet">
     <div class="sheet-handle"></div>
-    <div class="sheet-titulo">Configuración</div>
+    <div class="sheet-titulo">Configuracion</div>
     <div class="campo-grupo">
       <label for="inputUrl">URL del NAS (PocketBase)</label>
       <input type="text" id="inputUrl" placeholder="https://tu-NAS:8090" autocapitalize="none" autocorrect="off" spellcheck="false" />
       <div class="campo-ayuda">
-        Ejemplo: https://tu-NAS:puerto<br>
-        Solo se guarda en este dispositivo, nunca en GitHub. &#128274;
+        Ejemplo: https://chiquitinas2.tailf3347a.ts.net<br>
+        Solo se guarda en este dispositivo. &#128274;
       </div>
     </div>
     <button class="btn-guardar" id="btnGuardarConfig">Guardar y conectar</button>
@@ -183,201 +214,247 @@
 <div class="toast" id="toast"></div>
 
 <script>
-var COLECCION = 'Asuntos';
-var TOTAL = 6;
-var STORAGE_KEY = 'pb_url';
-var MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-var DIAS_SEMANA = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
+  // ── CONFIGURACION ──────────────────────────────────
+  var COLECCION = 'Asuntos';
+  var TOTAL = 6;
+  var STORAGE_KEY = 'pb_url';
+  var MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  var DIAS = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
 
-var anyoActivo = new Date().getFullYear();
-var datos = [];
-var conectado = false;
+  var anyoActivo = new Date().getFullYear();
+  var datos = [];
+  var conectado = false;
 
-function getPbUrl() { return localStorage.getItem(STORAGE_KEY) || ''; }
-
-// Eventos
-document.getElementById('btnConfig').addEventListener('click', abrirConfig);
-document.getElementById('btnAnyadir').addEventListener('click', abrirModal);
-document.getElementById('btnGuardar').addEventListener('click', guardar);
-document.getElementById('btnGuardarConfig').addEventListener('click', guardarConfig);
-document.getElementById('btnAnyoMenos').addEventListener('click', function(){ cambiarAnyo(-1); });
-document.getElementById('btnAnyoMas').addEventListener('click', function(){ cambiarAnyo(1); });
-document.getElementById('overlay').addEventListener('click', function(e){ if(e.target===this) cerrarModal(); });
-document.getElementById('overlayConfig').addEventListener('click', function(e){ if(e.target===this) cerrarConfig(); });
-
-// API
-function cargarDatos() {
-  var pbUrl = getPbUrl();
-  if (!pbUrl) {
-    setEstado('desconectado', 'Configura la URL del NAS');
-    datos = []; renderizar();
-    setTimeout(abrirConfig, 600);
-    return;
+  function getPbUrl() {
+    return localStorage.getItem(STORAGE_KEY) || '';
   }
-  setEstado('cargando', 'Conectando con el NAS...');
-  fetch(pbUrl + '/api/collections/' + COLECCION + '/records?perPage=200&sort=-created&_=' + Date.now())
-    .then(function(res) {
-      if (!res.ok) throw new Error('Error ' + res.status);
-      return res.json();
-    })
-    .then(function(json) {
-      var todos = json.items || [];
-      // Filtrar por año en el cliente usando el campo 'created' si 'fecha' está vacío
-      datos = todos.filter(function(item) {
-        var f = (item.fecha && item.fecha.length > 4) ? item.fecha : item.created;
-        return f && f.indexOf(String(anyoActivo)) >= 0;
-      });
-      conectado = true;
-      var msgTotal = todos.length !== datos.length ? ' (' + todos.length + ' total)' : '';
-      setEstado('conectado', 'NAS conectado · ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : '') + ' ' + anyoActivo + msgTotal);
+
+  // ── EVENTOS ────────────────────────────────────────
+  document.getElementById('btnConfig').addEventListener('click', abrirConfig);
+  document.getElementById('btnAnyadir').addEventListener('click', abrirModal);
+  document.getElementById('btnGuardar').addEventListener('click', guardar);
+  document.getElementById('btnGuardarConfig').addEventListener('click', guardarConfig);
+  document.getElementById('btnAnyoMenos').addEventListener('click', function() { cambiarAnyo(-1); });
+  document.getElementById('btnAnyoMas').addEventListener('click', function() { cambiarAnyo(1); });
+  document.getElementById('overlay').addEventListener('click', function(e) { if (e.target === this) cerrarModal(); });
+  document.getElementById('overlayConfig').addEventListener('click', function(e) { if (e.target === this) cerrarConfig(); });
+
+  // ── API ────────────────────────────────────────────
+  function cargarDatos() {
+    var pbUrl = getPbUrl();
+    if (!pbUrl) {
+      setEstado('desconectado', 'Configura la URL del NAS');
+      datos = [];
       renderizar();
-    })
-    .catch(function() {
-      conectado = false;
-      setEstado('desconectado', 'Sin conexion · Tailscale activo?');
-      datos = []; renderizar();
-    });
-}
+      setTimeout(abrirConfig, 600);
+      return;
+    }
 
-function crearRegistro(fecha, nota) {
-  return fetch(getPbUrl() + '/api/collections/' + COLECCION + '/records', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fecha: fecha ? fecha + ' 00:00:00.000Z' : '', nota: nota })
-  }).then(function(res) {
-    return res.json().then(function(data) {
-      if (!res.ok) throw new Error('PB error ' + res.status + ': ' + JSON.stringify(data));
-      return data;
-    });
-  });
-}
+    setEstado('cargando', 'Conectando con el NAS...');
 
-function borrarRegistro(id) {
-  return fetch(getPbUrl() + '/api/collections/' + COLECCION + '/records/' + id, {
-    method: 'DELETE'
-  }).then(function(res) {
-    if (!res.ok) throw new Error('Error al borrar');
-  });
-}
-
-// UI
-function setEstado(tipo, texto) {
-  var el = document.getElementById('estadoConexion');
-  el.className = 'estado-conexion ' + tipo;
-  document.getElementById('estadoTexto').textContent = texto;
-}
-
-function renderizar() {
-  var usados = datos.length;
-  document.getElementById('usados').textContent = usados;
-  document.getElementById('anyoLabel').textContent = anyoActivo;
-  document.getElementById('anyoNav').textContent = anyoActivo;
-  document.getElementById('progreso').style.width = Math.min(100, (usados / TOTAL) * 100) + '%';
-  document.getElementById('alertaAgotado').classList.toggle('visible', usados >= TOTAL);
-  var lista = document.getElementById('lista');
-  var vacio = document.getElementById('vacio');
-  var listaTitulo = document.getElementById('listaTitulo');
-  lista.innerHTML = '';
-  if (datos.length === 0) {
-    vacio.style.display = 'block';
-    listaTitulo.style.display = 'none';
-    return;
+    // Sin sort ni filtro para evitar errores 400
+    fetch(pbUrl + '/api/collections/' + COLECCION + '/records?perPage=200')
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(json) {
+        var todos = json.items || [];
+        // Filtrar por año en el cliente
+        datos = todos.filter(function(item) {
+          var f = item.fecha || item.created || '';
+          return f.indexOf(String(anyoActivo)) >= 0;
+        });
+        conectado = true;
+        setEstado('conectado', 'NAS conectado · ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : ''));
+        renderizar();
+      })
+      .catch(function(err) {
+        console.error('Error cargando datos:', err);
+        conectado = false;
+        setEstado('desconectado', 'Sin conexion con el NAS');
+        datos = [];
+        renderizar();
+      });
   }
-  vacio.style.display = 'none';
-  listaTitulo.style.display = 'block';
-  datos.forEach(function(item) {
-    var fechaStr = (item.fecha && item.fecha.length > 4) ? item.fecha.substring(0,10) : item.created.substring(0,10);
-    var fecha = new Date(fechaStr + 'T12:00:00');
-    var el = document.createElement('div');
-    el.className = 'item';
-    el.innerHTML =
-      '<div class="item-fecha-box">' +
-        '<div class="item-dia">' + fecha.getDate() + '</div>' +
-        '<div class="item-mes">' + MESES[fecha.getMonth()] + '</div>' +
-      '</div>' +
-      '<div class="item-body">' +
-        '<div class="item-weekday">' + DIAS_SEMANA[fecha.getDay()] + ' &middot; ' + fecha.getFullYear() + '</div>' +
-        '<div class="item-nota ' + (item.nota ? '' : 'vacia') + '">' + (item.nota || 'Sin motivo') + '</div>' +
-      '</div>' +
-      '<button class="btn-borrar" data-id="' + item.id + '">&times;</button>';
-    el.querySelector('.btn-borrar').addEventListener('click', function() {
-      borrar(this.getAttribute('data-id'));
+
+  function crearRegistro(fecha, nota) {
+    var pbUrl = getPbUrl();
+    // PocketBase tipo Date necesita formato: YYYY-MM-DD HH:MM:SS.MSSZ
+    var fechaPB = fecha + ' 00:00:00.000Z';
+    return fetch(pbUrl + '/api/collections/' + COLECCION + '/records', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fecha: fechaPB, nota: nota })
+    }).then(function(res) {
+      if (!res.ok) {
+        return res.text().then(function(t) { throw new Error(t); });
+      }
+      return res.json();
     });
-    lista.appendChild(el);
-  });
-}
-
-function abrirModal() {
-  if (!conectado) { mostrarToast('Sin conexion con el NAS'); return; }
-  if (datos.length >= TOTAL) { mostrarToast('Ya has usado todos los dias disponibles'); return; }
-  var hoy = new Date();
-  document.getElementById('inputFecha').value =
-    hoy.getFullYear() + '-' + String(hoy.getMonth()+1).padStart(2,'0') + '-' + String(hoy.getDate()).padStart(2,'0');
-  document.getElementById('inputNota').value = '';
-  document.getElementById('overlay').classList.add('visible');
-  setTimeout(function(){ document.getElementById('inputNota').focus(); }, 350);
-}
-
-function cerrarModal() { document.getElementById('overlay').classList.remove('visible'); }
-
-function guardar() {
-  var fecha = document.getElementById('inputFecha').value;
-  var nota  = document.getElementById('inputNota').value.trim();
-  if (!fecha) { mostrarToast('Elige una fecha primero'); return; }
-  if (parseInt(fecha.split('-')[0]) !== anyoActivo) { mostrarToast('La fecha debe ser del año ' + anyoActivo); return; }
-  if (datos.some(function(d){ var f = d.fecha || d.created || ''; return f.indexOf(fecha) >= 0; })) {
-    mostrarToast('Ese dia ya esta registrado'); return;
   }
-  var btn = document.getElementById('btnGuardar');
-  btn.disabled = true; btn.textContent = 'Guardando...';
-  crearRegistro(fecha, nota)
-    .then(function() {
-      cerrarModal();
-      cargarDatos();
-      mostrarToast('Dia registrado!');
-    })
-    .catch(function(err) {
-      mostrarToast('Error: ' + (err.message || 'revisa la conexion'));
-    })
-    .finally(function() {
-      btn.disabled = false; btn.textContent = 'Guardar';
+
+  function borrarRegistro(id) {
+    var pbUrl = getPbUrl();
+    return fetch(pbUrl + '/api/collections/' + COLECCION + '/records/' + id, {
+      method: 'DELETE'
+    }).then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
     });
-}
+  }
 
-function borrar(id) {
-  if (!confirm('Borrar este registro?')) return;
-  borrarRegistro(id)
-    .then(function() { cargarDatos(); mostrarToast('Registro eliminado'); })
-    .catch(function() { mostrarToast('Error al borrar'); });
-}
+  // ── UI ─────────────────────────────────────────────
+  function setEstado(tipo, texto) {
+    var el = document.getElementById('estadoConexion');
+    el.className = 'estado-conexion ' + tipo;
+    document.getElementById('estadoTexto').textContent = texto;
+  }
 
-function abrirConfig() {
-  document.getElementById('inputUrl').value = getPbUrl();
-  document.getElementById('overlayConfig').classList.add('visible');
-  setTimeout(function(){ document.getElementById('inputUrl').focus(); }, 350);
-}
+  function renderizar() {
+    var usados = datos.length;
+    document.getElementById('usados').textContent = usados;
+    document.getElementById('anyoLabel').textContent = anyoActivo;
+    document.getElementById('anyoNav').textContent = anyoActivo;
+    document.getElementById('progreso').style.width = Math.min(100, (usados / TOTAL) * 100) + '%';
+    document.getElementById('alertaAgotado').classList.toggle('visible', usados >= TOTAL);
 
-function cerrarConfig() { document.getElementById('overlayConfig').classList.remove('visible'); }
+    var lista = document.getElementById('lista');
+    var vacio = document.getElementById('vacio');
+    var listaTitulo = document.getElementById('listaTitulo');
+    lista.innerHTML = '';
 
-function guardarConfig() {
-  var url = document.getElementById('inputUrl').value.trim();
-  if (!url) { mostrarToast('Introduce la URL del NAS'); return; }
-  if (url.charAt(url.length-1) === '/') url = url.slice(0,-1);
-  localStorage.setItem(STORAGE_KEY, url);
-  cerrarConfig();
-  mostrarToast('URL guardada, conectando...');
+    if (datos.length === 0) {
+      vacio.style.display = 'block';
+      listaTitulo.style.display = 'none';
+      return;
+    }
+
+    vacio.style.display = 'none';
+    listaTitulo.style.display = 'block';
+
+    datos.forEach(function(item) {
+      // Extraer fecha: usar campo fecha si tiene valor, si no usar created
+      var fechaRaw = (item.fecha && item.fecha.length > 4) ? item.fecha : (item.created || '');
+      var fechaStr = fechaRaw.substring(0, 10);
+      var fecha = new Date(fechaStr + 'T12:00:00');
+      if (isNaN(fecha.getTime())) return;
+
+      var el = document.createElement('div');
+      el.className = 'item';
+      el.innerHTML =
+        '<div class="item-fecha-box">' +
+          '<div class="item-dia">' + fecha.getDate() + '</div>' +
+          '<div class="item-mes">' + MESES[fecha.getMonth()] + '</div>' +
+        '</div>' +
+        '<div class="item-body">' +
+          '<div class="item-weekday">' + DIAS[fecha.getDay()] + ' &middot; ' + fecha.getFullYear() + '</div>' +
+          '<div class="item-nota ' + (item.nota ? '' : 'vacia') + '">' + (item.nota || 'Sin motivo') + '</div>' +
+        '</div>' +
+        '<button class="btn-borrar" data-id="' + item.id + '">&times;</button>';
+
+      el.querySelector('.btn-borrar').addEventListener('click', function() {
+        borrar(this.getAttribute('data-id'));
+      });
+      lista.appendChild(el);
+    });
+  }
+
+  // ── MODAL NUEVO DIA ────────────────────────────────
+  function abrirModal() {
+    if (!conectado) { mostrarToast('Sin conexion con el NAS'); return; }
+    if (datos.length >= TOTAL) { mostrarToast('Ya has usado todos los dias disponibles'); return; }
+    var hoy = new Date();
+    var yyyy = hoy.getFullYear();
+    var mm = String(hoy.getMonth() + 1).padStart(2, '0');
+    var dd = String(hoy.getDate()).padStart(2, '0');
+    document.getElementById('inputFecha').value = yyyy + '-' + mm + '-' + dd;
+    document.getElementById('inputNota').value = '';
+    document.getElementById('overlay').classList.add('visible');
+    setTimeout(function() { document.getElementById('inputNota').focus(); }, 350);
+  }
+
+  function cerrarModal() {
+    document.getElementById('overlay').classList.remove('visible');
+  }
+
+  function guardar() {
+    var fecha = document.getElementById('inputFecha').value;
+    var nota = document.getElementById('inputNota').value.trim();
+
+    if (!fecha) { mostrarToast('Elige una fecha primero'); return; }
+    if (parseInt(fecha.split('-')[0]) !== anyoActivo) {
+      mostrarToast('La fecha debe ser del anno ' + anyoActivo); return;
+    }
+
+    var btn = document.getElementById('btnGuardar');
+    btn.disabled = true;
+    btn.textContent = 'Guardando...';
+
+    crearRegistro(fecha, nota)
+      .then(function() {
+        cerrarModal();
+        cargarDatos();
+        mostrarToast('Dia registrado!');
+      })
+      .catch(function(err) {
+        console.error('Error al guardar:', err);
+        mostrarToast('Error al guardar. Revisa la conexion.');
+      })
+      .finally(function() {
+        btn.disabled = false;
+        btn.textContent = 'Guardar';
+      });
+  }
+
+  function borrar(id) {
+    if (!confirm('Borrar este registro?')) return;
+    borrarRegistro(id)
+      .then(function() {
+        cargarDatos();
+        mostrarToast('Registro eliminado');
+      })
+      .catch(function() {
+        mostrarToast('Error al borrar');
+      });
+  }
+
+  // ── MODAL CONFIGURACION ────────────────────────────
+  function abrirConfig() {
+    document.getElementById('inputUrl').value = getPbUrl();
+    document.getElementById('overlayConfig').classList.add('visible');
+    setTimeout(function() { document.getElementById('inputUrl').focus(); }, 350);
+  }
+
+  function cerrarConfig() {
+    document.getElementById('overlayConfig').classList.remove('visible');
+  }
+
+  function guardarConfig() {
+    var url = document.getElementById('inputUrl').value.trim();
+    if (!url) { mostrarToast('Introduce la URL del NAS'); return; }
+    if (url.charAt(url.length - 1) === '/') url = url.slice(0, -1);
+    localStorage.setItem(STORAGE_KEY, url);
+    cerrarConfig();
+    mostrarToast('URL guardada, conectando...');
+    cargarDatos();
+  }
+
+  function cambiarAnyo(delta) {
+    anyoActivo += delta;
+    datos = [];
+    renderizar();
+    cargarDatos();
+  }
+
+  function mostrarToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 2500);
+  }
+
+  // ── INICIO ─────────────────────────────────────────
   cargarDatos();
-}
-
-function cambiarAnyo(delta) { anyoActivo += delta; cargarDatos(); }
-
-function mostrarToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); }, 2500);
-}
-
-cargarDatos();
 </script>
 </body>
 </html>
