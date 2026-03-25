@@ -145,6 +145,16 @@
     /* TOAST */
     .toast { position: fixed; bottom: calc(var(--safe-bottom) + 24px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--texto); color: #fff; padding: 12px 20px; border-radius: 99px; font-size: 14px; font-weight: 500; white-space: nowrap; opacity: 0; transition: opacity 0.25s, transform 0.25s; z-index: 500; pointer-events: none; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    
+    /* NOTIFICACIONES */
+    .notif-banner { border-radius: var(--radio); padding: 14px 18px; display: none; align-items: flex-start; gap: 12px; }
+    .notif-banner.visible { display: flex; }
+    .notif-banner.amarillo { background: #FFFBEB; border: 2px solid var(--amarillo); }
+    .notif-banner.naranja  { background: #FFF7ED; border: 2px solid #F97316; }
+    .notif-banner.azul     { background: #EFF6FF; border: 2px solid #3B82F6; }
+    .notif-banner-icon { font-size: 22px; flex-shrink: 0; }
+    .notif-banner-txt { font-size: 13px; font-weight: 500; line-height: 1.4; }
+    .notif-banner-titulo { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
   </style>
 </head>
 <body>
