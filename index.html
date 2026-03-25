@@ -774,49 +774,6 @@ function getPbUrl() {
   // Mitad
   document.getElementById('notifMitad').classList.toggle('visible', usados === Math.floor(TOTAL / 2) && restantes > 0);
 
-  // Diciembre con dias restantes
-  document.getElementById('notifDiciembre').classList.toggle('visible', mes === 11 && restantes > 0);
-  
-  function comprobarNotificaciones() {
-  var usados = datos.length;
-  var restantes = TOTAL - usados;
-  var hoy = new Date();
-  var mes = hoy.getMonth();
-  var trimestre = Math.floor(mes / 3);
-  var claveTrim = 'notif_trim_' + anyoActivo + '_' + trimestre;
-
-  if (anyoActivo !== hoy.getFullYear()) return;
-
-  document.getElementById('notifUltimoDia').classList.toggle('visible', restantes === 1);
-  document.getElementById('notifMitad').classList.toggle('visible', usados === Math.floor(TOTAL / 2) && restantes > 0);
-  document.getElementById('notifDiciembre').classList.toggle('visible', mes === 11 && restantes > 0);
-
-  var yaVisto = localStorage.getItem(claveTrim);
-  if (!yaVisto && usados > 0) {
-    var txt = document.getElementById('notifTrimestralTxt');
-    txt.innerHTML = '<div class="notif-banner-titulo">Resumen trimestral</div>Llevas <strong>' + usados + '</strong> dia' + (usados !== 1 ? 's' : '') + ' usado' + (usados !== 1 ? 's' : '') + ' y te quedan <strong>' + restantes + '</strong> de ' + TOTAL + '.';
-    document.getElementById('notifTrimestral').classList.add('visible');
-    localStorage.setItem(claveTrim, '1');
-  }
-
-  if (!('Notification' in window)) return;
-  if (Notification.permission === 'denied') return;
-
-  var mensaje = null;
-  if (restantes === 1) mensaje = 'Solo te queda 1 dia de asunto propio. Usalo antes de fin de ano.';
-  else if (usados === Math.floor(TOTAL / 2)) mensaje = 'Llevas la mitad de tus dias de asunto propio usados.';
-  else if (mes === 11 && restantes > 0) mensaje = 'Estamos en diciembre y te quedan ' + restantes + ' dias sin usar.';
-
-  if (!mensaje) return;
-
-  if (Notification.permission === 'granted') {
-    new Notification('Asuntos Propios', { body: mensaje });
-  } else {
-    Notification.requestPermission().then(function(p) {
-      if (p === 'granted') new Notification('Asuntos Propios', { body: mensaje });
-    });
-  }
-}
   function cambiarAnyo(delta) {
     anyoActivo += delta;
     datos = []; renderizar(); cargarDatos();
