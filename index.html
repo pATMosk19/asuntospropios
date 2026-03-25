@@ -454,6 +454,7 @@ function getPbUrl() {
         conectado = true;
         setEstado('conectado', 'Conectado &middot; ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : ''));
         renderizar();
+        comprobarNotificaciones();
       })
       .catch(function(err) {
         if (err.message === '_401') return;
