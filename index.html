@@ -27,7 +27,6 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--texto); min-height: 100dvh; padding-top: var(--safe-top); padding-bottom: calc(var(--safe-bottom) + 80px); overflow-x: hidden; }
-
     /* CABECERA */
     header { background: var(--amarillo); padding: calc(var(--safe-top) + 20px) 24px 24px; position: sticky; top: 0; z-index: 100; }
     .header-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
@@ -36,33 +35,27 @@
     .header-derecha { display: flex; align-items: flex-start; gap: 8px; }
     .btn-config { background: rgba(0,0,0,0.08); border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px; transition: background 0.15s; }
     .btn-config:active { background: rgba(0,0,0,0.18); }
-
     /* AVATAR USUARIO */
     .btn-avatar { background: var(--texto); border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px; transition: opacity 0.15s; overflow: hidden; }
     .btn-avatar:active { opacity: 0.75; }
     .avatar-iniciales { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--amarillo); line-height: 1; }
     .avatar-icono { font-size: 16px; line-height: 1; }
-
     .contador-wrap { display: flex; flex-direction: column; align-items: flex-end; }
     .contador { display: flex; align-items: baseline; gap: 3px; }
     .contador-num { font-family: 'DM Serif Display', serif; font-size: 52px; line-height: 1; color: var(--rojo); }
     .contador-total { font-size: 20px; color: rgba(0,0,0,0.35); font-family: 'DM Serif Display', serif; }
     .contador-label { font-size: 11px; color: rgba(0,0,0,0.45); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; font-weight: 500; }
-
     /* PROGRESO */
     .progreso-wrap { background: var(--amarillo); padding: 0 24px 20px; }
     .progreso-track { background: rgba(0,0,0,0.12); border-radius: 99px; height: 8px; overflow: hidden; }
     .progreso-fill { height: 100%; background: var(--rojo); border-radius: 99px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
-
     /* SELECTOR AÑO */
     .anyo-selector { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 12px 0 0; }
     .anyo-btn { background: none; border: none; font-size: 22px; color: var(--texto); cursor: pointer; padding: 4px 8px; opacity: 0.5; transition: opacity 0.15s; }
     .anyo-btn:active { opacity: 1; }
     .anyo-label { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--texto); min-width: 60px; text-align: center; }
-
     /* MAIN */
     main { padding: 24px 16px 0; display: flex; flex-direction: column; gap: 20px; }
-
     /* ESTADO CONEXION */
     .estado-conexion { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; font-size: 13px; font-weight: 500; }
     .estado-conexion.conectado    { background: #E8F5E9; color: #2E7D32; }
@@ -73,12 +66,10 @@
     .desconectado .estado-dot { background: #FF9800; }
     .cargando .estado-dot     { background: #9E9E9E; animation: pulsar 1s infinite; }
     @keyframes pulsar { 0%,100%{opacity:1} 50%{opacity:.3} }
-
     /* BOTON AÑADIR */
     .btn-anyadir { background: var(--texto); color: #fff; border: none; border-radius: var(--radio); padding: 18px 24px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: var(--sombra); transition: transform 0.15s, opacity 0.15s; }
     .btn-anyadir:active { transform: scale(0.97); opacity: 0.85; }
     .btn-icon { width: 26px; height: 26px; background: var(--amarillo); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; line-height: 1; color: #1A1A1A; flex-shrink: 0; }
-
     /* OVERLAYS */
     .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
     .overlay.visible { opacity: 1; pointer-events: all; }
@@ -95,12 +86,10 @@
     .btn-guardar { background: var(--amarillo); color: var(--texto); border: none; border-radius: 14px; padding: 17px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 6px; transition: transform 0.15s, opacity 0.15s; }
     .btn-guardar:active { transform: scale(0.97); opacity: 0.85; }
     .btn-guardar:disabled { opacity: 0.5; cursor: not-allowed; }
-
     /* TABS AUTH */
     .tabs { display: flex; background: var(--surface2); border-radius: 14px; padding: 4px; margin-bottom: 24px; }
     .tab-btn { flex: 1; border: none; background: none; border-radius: 10px; padding: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--texto-suave); cursor: pointer; transition: background 0.2s, color 0.2s; }
     .tab-btn.activo { background: var(--surface); color: var(--texto); box-shadow: 0 1px 6px rgba(0,0,0,0.08); }
-
     /* PERFIL USUARIO (cuando está autenticado) */
     .perfil-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 16px 0 24px; }
     .perfil-avatar { width: 72px; height: 72px; background: var(--texto); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
@@ -111,11 +100,9 @@
     .btn-secundario:active { background: var(--borde); }
     .btn-peligro { background: #FFF0F0; color: var(--rojo); border: none; border-radius: 14px; padding: 15px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 8px; transition: background 0.15s; }
     .btn-peligro:active { background: #FFD6D6; }
-
     /* ERROR AUTH */
     .error-auth { background: #FFF0F0; border: 1.5px solid #FFBABA; border-radius: 12px; padding: 12px 14px; font-size: 14px; color: var(--rojo); margin-bottom: 16px; display: none; }
     .error-auth.visible { display: block; }
-
     /* LISTA */
     .lista-titulo { font-size: 13px; font-weight: 600; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 4px; }
     .lista { display: flex; flex-direction: column; gap: 10px; }
@@ -130,25 +117,21 @@
     .item-nota.vacia { color: var(--texto-suave); font-style: italic; font-weight: 400; }
     .btn-borrar { background: none; border: none; padding: 4px; cursor: pointer; color: var(--borde); font-size: 20px; line-height: 1; flex-shrink: 0; transition: color 0.15s; }
     .btn-borrar:active { color: var(--rojo); }
-
     /* VACIO */
     .vacio { text-align: center; padding: 48px 24px; color: var(--texto-suave); }
     .vacio-emoji { font-size: 48px; margin-bottom: 12px; }
     .vacio-titulo { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--texto); margin-bottom: 6px; }
     .vacio-sub { font-size: 14px; line-height: 1.5; }
-
     /* ALERTA */
     .alerta-agotado { background: #FFF0F0; border: 2px solid var(--rojo); border-radius: var(--radio); padding: 16px 18px; align-items: center; gap: 12px; display: none; }
     .alerta-agotado.visible { display: flex; }
     .alerta-agotado-texto { font-size: 14px; font-weight: 500; color: var(--rojo); }
-
     /* TOAST */
     .toast { position: fixed; bottom: calc(var(--safe-bottom) + 24px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--texto); color: #fff; padding: 12px 20px; border-radius: 99px; font-size: 14px; font-weight: 500; white-space: nowrap; opacity: 0; transition: opacity 0.25s, transform 0.25s; z-index: 500; pointer-events: none; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
-
 <header>
   <div class="header-inner">
     <div>
@@ -156,7 +139,7 @@
       <div class="header-sub">Correos &middot; <span id="anyoLabel">2026</span></div>
     </div>
     <div class="header-derecha">
-      <button class="btn-config" id="btnConfig" title="Configurar NAS">&#9881;&#65039;</button>
+      <button class="btn-config" id="btnConfig" title="Configuracion">&#9881;&#65039;</button>
       <button class="btn-avatar" id="btnUsuario" title="Usuario">
         <span class="avatar-icono" id="avatarIcono">&#128100;</span>
       </button>
@@ -175,38 +158,31 @@
     <button class="anyo-btn" id="btnAnyoMas">&#8250;</button>
   </div>
 </header>
-
 <div class="progreso-wrap">
   <div class="progreso-track">
     <div class="progreso-fill" id="progreso" style="width:0%"></div>
   </div>
 </div>
-
 <main>
   <div class="estado-conexion cargando" id="estadoConexion">
     <div class="estado-dot"></div>
     <span id="estadoTexto">Conectando...</span>
   </div>
-
   <div class="alerta-agotado" id="alertaAgotado">
     <span class="alerta-agotado-texto">&#9888;&#65039; Has agotado todos tus dias de asuntos propios este anno.</span>
   </div>
-
   <button class="btn-anyadir" id="btnAnyadir">
     <span class="btn-icon">+</span>
     Registrar dia de asunto propio
   </button>
-
   <div class="lista-titulo" id="listaTitulo" style="display:none">Dias registrados</div>
   <div class="lista" id="lista"></div>
-
   <div class="vacio" id="vacio">
     <div class="vacio-emoji">&#128204;</div>
     <div class="vacio-titulo">Sin registros aun</div>
     <div class="vacio-sub">Pulsa el boton para registrar<br>tu primer dia de asunto propio</div>
   </div>
 </main>
-
 <!-- MODAL NUEVO DIA -->
 <div class="overlay" id="overlay">
   <div class="sheet">
@@ -223,34 +199,23 @@
     <button class="btn-guardar" id="btnGuardar">Guardar</button>
   </div>
 </div>
-
-<!-- MODAL CONFIGURACION NAS -->
+<!-- MODAL CONFIGURACION -->
 <div class="overlay" id="overlayConfig">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-titulo">Configuracion</div>
-    <div class="campo-grupo" id="campoUrl">
-      <label for="inputUrl">URL del NAS (PocketBase)</label>
-      <input type="text" id="inputUrl" placeholder="https://tu-NAS:8090" autocapitalize="none" autocorrect="off" spellcheck="false" />
-      <div class="campo-ayuda">
-        Ejemplo: https://server<br>
-        Solo se guarda en este dispositivo. &#128274;
-      </div>
-    </div>
     <div class="campo-grupo">
       <label for="inputTotal">Dias disponibles por ano</label>
       <input type="text" id="inputTotal" placeholder="6" inputmode="numeric" />
       <div class="campo-ayuda">Por defecto 6. Cambia este valor si tu convenio es diferente.</div>
     </div>
-    <button class="btn-guardar" id="btnGuardarConfig">Guardar y conectar</button>
+    <button class="btn-guardar" id="btnGuardarConfig">Guardar</button>
   </div>
 </div>
-
 <!-- MODAL AUTENTICACION / PERFIL -->
 <div class="overlay" id="overlayAuth">
   <div class="sheet">
     <div class="sheet-handle"></div>
-
     <!-- Vista: no autenticado -->
     <div id="vistaLogin">
       <div class="sheet-titulo" id="authTitulo">Acceder</div>
@@ -259,7 +224,6 @@
         <button class="tab-btn" id="tabRegistro" onclick="mostrarTab('registro')">Registrarse</button>
       </div>
       <div class="error-auth" id="errorAuth"></div>
-
       <!-- Formulario login -->
       <div id="formLogin">
         <div class="campo-grupo">
@@ -272,7 +236,6 @@
         </div>
         <button class="btn-guardar" id="btnLogin">Entrar</button>
       </div>
-
       <!-- Formulario registro -->
       <div id="formRegistro" style="display:none">
         <div class="campo-grupo">
@@ -290,7 +253,6 @@
         <button class="btn-guardar" id="btnRegistro">Crear cuenta</button>
       </div>
     </div>
-
     <!-- Vista: autenticado (perfil) -->
     <div id="vistaPerfil" style="display:none">
       <div class="perfil-wrap">
@@ -305,37 +267,30 @@
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
-
 <script>
   // ── CONFIGURACION ────────────────────────────────────
   var COLECCION = 'Asuntos';
   var STORAGE_KEY = 'pb_url';
-  var PB_URL_FIJA = '__PB_URL__';
+  var PB_URL_FIJA = 'https://chiquitinas.tailf3347a.ts.net';
   var AUTH_TOKEN_KEY = 'pb_token';
   var AUTH_USER_KEY = 'pb_user';
   var TOTAL_KEY = 'pb_total';
   var MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
   var DIAS = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
-
   var anyoActivo = new Date().getFullYear();
   var datos = [];
   var conectado = false;
   var TOTAL = parseInt(localStorage.getItem(TOTAL_KEY) || '6', 10);
-
   // ── AUTH STATE ───────────────────────────────────────
   var authToken = localStorage.getItem(AUTH_TOKEN_KEY) || '';
   var authUser  = JSON.parse(localStorage.getItem(AUTH_USER_KEY) || 'null');
-
   function estaAutenticado() { return !!(authToken && authUser); }
-
   function getHeaders() {
     var h = { 'Content-Type': 'application/json' };
     if (authToken) h['Authorization'] = authToken;
     return h;
   }
-
   function guardarSesion(token, user) {
     authToken = token;
     authUser  = user;
@@ -343,7 +298,6 @@
     localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
     actualizarAvatar();
   }
-
   function limpiarSesion() {
     authToken = '';
     authUser  = null;
@@ -354,16 +308,12 @@
     actualizarAvatar();
     renderizar();
   }
-
   function manejarNoAutorizado() {
     limpiarSesion();
     setEstado('desconectado', 'Sesion caducada, vuelve a entrar');
     setTimeout(abrirAuth, 400);
   }
-
-function getPbUrl() { 
-  return PB_URL_FIJA !== '__PB_URL__' ? PB_URL_FIJA : (localStorage.getItem(STORAGE_KEY) || '');
-}
+  function getPbUrl() { return PB_URL_FIJA; }
   // ── AVATAR CABECERA ──────────────────────────────────
   function iniciales(user) {
     if (!user) return '';
@@ -376,7 +326,6 @@ function getPbUrl() {
     }
     return (user.email || '?')[0].toUpperCase();
   }
-
   function actualizarAvatar() {
     var el = document.getElementById('avatarIcono');
     if (estaAutenticado()) {
@@ -386,22 +335,14 @@ function getPbUrl() {
       el.outerHTML = '<span class="avatar-icono" id="avatarIcono">&#128100;</span>';
     }
   }
-
   // ── API ──────────────────────────────────────────────
   function cargarDatos() {
-    var pbUrl = getPbUrl();
-    if (!pbUrl) {
-      setEstado('desconectado', 'Configura la URL del NAS');
-      datos = []; renderizar(); setTimeout(abrirConfig, 600); return;
-    }
     if (!estaAutenticado()) {
       setEstado('desconectado', 'Inicia sesion para continuar');
       datos = []; renderizar(); setTimeout(abrirAuth, 600); return;
     }
-
     setEstado('cargando', 'Cargando datos...');
-
-    fetch(pbUrl + '/api/collections/' + COLECCION + '/records?perPage=200', {
+    fetch(getPbUrl() + '/api/collections/' + COLECCION + '/records?perPage=200', {
       headers: getHeaders()
     })
       .then(function(res) {
@@ -426,11 +367,9 @@ function getPbUrl() {
         datos = []; renderizar();
       });
   }
-
   function crearRegistro(fecha, nota) {
-    var pbUrl = getPbUrl();
     var fechaPB = fecha + ' 00:00:00.000Z';
-    return fetch(pbUrl + '/api/collections/' + COLECCION + '/records', {
+    return fetch(getPbUrl() + '/api/collections/' + COLECCION + '/records', {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({ fecha: fechaPB, nota: nota, user: authUser.id })
@@ -440,10 +379,8 @@ function getPbUrl() {
       return res.json();
     });
   }
-
   function borrarRegistro(id) {
-    var pbUrl = getPbUrl();
-    return fetch(pbUrl + '/api/collections/' + COLECCION + '/records/' + id, {
+    return fetch(getPbUrl() + '/api/collections/' + COLECCION + '/records/' + id, {
       method: 'DELETE',
       headers: getHeaders()
     }).then(function(res) {
@@ -451,10 +388,8 @@ function getPbUrl() {
       if (!res.ok) throw new Error('HTTP ' + res.status);
     });
   }
-
   function loginApi(email, password) {
-    var pbUrl = getPbUrl();
-    return fetch(pbUrl + '/api/collections/users/auth-with-password', {
+    return fetch(getPbUrl() + '/api/collections/users/auth-with-password', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ identity: email, password: password })
@@ -467,10 +402,8 @@ function getPbUrl() {
       guardarSesion(data.token, data.record);
     });
   }
-
   function registroApi(nombre, email, password) {
-    var pbUrl = getPbUrl();
-    return fetch(pbUrl + '/api/collections/users/records', {
+    return fetch(getPbUrl() + '/api/collections/users/records', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -486,14 +419,12 @@ function getPbUrl() {
       return loginApi(email, password);
     });
   }
-
   // ── UI ───────────────────────────────────────────────
   function setEstado(tipo, html) {
     var el = document.getElementById('estadoConexion');
     el.className = 'estado-conexion ' + tipo;
     document.getElementById('estadoTexto').innerHTML = html;
   }
-
   function renderizar() {
     var usados = datos.length;
     document.getElementById('usados').textContent = usados;
@@ -502,34 +433,27 @@ function getPbUrl() {
     document.getElementById('anyoNav').textContent = anyoActivo;
     document.getElementById('progreso').style.width = Math.min(100, (usados / TOTAL) * 100) + '%';
     document.getElementById('alertaAgotado').classList.toggle('visible', usados >= TOTAL);
-
     var lista = document.getElementById('lista');
     var vacio = document.getElementById('vacio');
     var listaTitulo = document.getElementById('listaTitulo');
     lista.innerHTML = '';
-
     if (datos.length === 0) {
       vacio.style.display = 'block';
       listaTitulo.style.display = 'none';
       return;
     }
-
     vacio.style.display = 'none';
     listaTitulo.style.display = 'block';
-
-    // Ordenar por fecha descendente
     var ordenados = datos.slice().sort(function(a, b) {
       var fa = (a.fecha || a.created || '').substring(0, 10);
       var fb = (b.fecha || b.created || '').substring(0, 10);
       return fb.localeCompare(fa);
     });
-
     ordenados.forEach(function(item) {
       var fechaRaw = (item.fecha && item.fecha.length > 4) ? item.fecha : (item.created || '');
       var fechaStr = fechaRaw.substring(0, 10);
       var fecha = new Date(fechaStr + 'T12:00:00');
       if (isNaN(fecha.getTime())) return;
-
       var el = document.createElement('div');
       el.className = 'item';
       el.innerHTML =
@@ -542,14 +466,12 @@ function getPbUrl() {
           '<div class="item-nota ' + (item.nota ? '' : 'vacia') + '">' + (item.nota || 'Sin motivo') + '</div>' +
         '</div>' +
         '<button class="btn-borrar" data-id="' + item.id + '">&times;</button>';
-
       el.querySelector('.btn-borrar').addEventListener('click', function() {
         borrar(this.getAttribute('data-id'));
       });
       lista.appendChild(el);
     });
   }
-
   // ── MODAL NUEVO DIA ──────────────────────────────────
   function abrirModal() {
     if (!estaAutenticado()) { mostrarToast('Inicia sesion primero'); abrirAuth(); return; }
@@ -564,21 +486,16 @@ function getPbUrl() {
     document.getElementById('overlay').classList.add('visible');
     setTimeout(function() { document.getElementById('inputNota').focus(); }, 350);
   }
-
   function cerrarModal() { document.getElementById('overlay').classList.remove('visible'); }
-
   function guardar() {
     var fecha = document.getElementById('inputFecha').value;
     var nota  = document.getElementById('inputNota').value.trim();
-
     if (!fecha) { mostrarToast('Elige una fecha primero'); return; }
     if (parseInt(fecha.split('-')[0]) !== anyoActivo) {
       mostrarToast('La fecha debe ser del anno ' + anyoActivo); return;
     }
-
     var btn = document.getElementById('btnGuardar');
     btn.disabled = true; btn.textContent = 'Guardando...';
-
     crearRegistro(fecha, nota)
       .then(function() { cerrarModal(); cargarDatos(); mostrarToast('Dia registrado!'); })
       .catch(function(err) {
@@ -586,7 +503,6 @@ function getPbUrl() {
       })
       .finally(function() { btn.disabled = false; btn.textContent = 'Guardar'; });
   }
-
   function borrar(id) {
     if (!confirm('Borrar este registro?')) return;
     borrarRegistro(id)
@@ -595,34 +511,23 @@ function getPbUrl() {
         if (err.message !== '_401') mostrarToast('Error al borrar');
       });
   }
-
   // ── MODAL CONFIGURACION ──────────────────────────────
   function abrirConfig() {
-    var urlFija = PB_URL_FIJA !== '__PB_URL__';
-    document.getElementById('campoUrl').style.display = urlFija ? 'none' : 'block';
-    document.getElementById('inputUrl').value = getPbUrl();
     document.getElementById('inputTotal').value = TOTAL;
     document.getElementById('overlayConfig').classList.add('visible');
     setTimeout(function() { document.getElementById('inputTotal').focus(); }, 350);
   }
-
   function cerrarConfig() { document.getElementById('overlayConfig').classList.remove('visible'); }
-
   function guardarConfig() {
-    var url = document.getElementById('inputUrl').value.trim();
     var totalInput = parseInt(document.getElementById('inputTotal').value.trim(), 10);
-    if (!url) { mostrarToast('Introduce la URL del NAS'); return; }
-    if (url.charAt(url.length - 1) === '/') url = url.slice(0, -1);
     if (!isNaN(totalInput) && totalInput > 0) {
       TOTAL = totalInput;
       localStorage.setItem(TOTAL_KEY, TOTAL);
     }
-    localStorage.setItem(STORAGE_KEY, url);
     cerrarConfig();
     mostrarToast('Configuracion guardada');
-    cargarDatos();
+    renderizar();
   }
-
   // ── MODAL AUTH / PERFIL ──────────────────────────────
   function abrirAuth() {
     var el = document.getElementById('overlayAuth');
@@ -641,9 +546,7 @@ function getPbUrl() {
     }
     el.classList.add('visible');
   }
-
   function cerrarAuth() { document.getElementById('overlayAuth').classList.remove('visible'); }
-
   function mostrarTab(tab) {
     var esLogin = (tab === 'login');
     document.getElementById('formLogin').style.display   = esLogin ? 'block' : 'none';
@@ -652,29 +555,21 @@ function getPbUrl() {
     document.getElementById('tabRegistro').className = 'tab-btn' + (!esLogin ? ' activo' : '');
     limpiarErrorAuth();
   }
-
   function mostrarErrorAuth(msg) {
     var el = document.getElementById('errorAuth');
     el.textContent = msg;
     el.classList.add('visible');
   }
-
   function limpiarErrorAuth() {
     document.getElementById('errorAuth').classList.remove('visible');
   }
-
   function hacerLogin() {
-    var pbUrl = getPbUrl();
-    if (!pbUrl) { cerrarAuth(); mostrarToast('Configura primero la URL del NAS'); setTimeout(abrirConfig, 400); return; }
-
     var email = document.getElementById('inputEmail').value.trim();
     var pass  = document.getElementById('inputPassword').value;
     if (!email || !pass) { mostrarErrorAuth('Rellena todos los campos'); return; }
-
     limpiarErrorAuth();
     var btn = document.getElementById('btnLogin');
     btn.disabled = true; btn.textContent = 'Entrando...';
-
     loginApi(email, pass)
       .then(function() {
         cerrarAuth();
@@ -686,22 +581,15 @@ function getPbUrl() {
       })
       .finally(function() { btn.disabled = false; btn.textContent = 'Entrar'; });
   }
-
   function hacerRegistro() {
-    var pbUrl = getPbUrl();
-    if (!pbUrl) { cerrarAuth(); mostrarToast('Configura primero la URL del NAS'); setTimeout(abrirConfig, 400); return; }
-
     var nombre = document.getElementById('inputNombreReg').value.trim();
     var email  = document.getElementById('inputEmailReg').value.trim();
     var pass   = document.getElementById('inputPasswordReg').value;
-
     if (!nombre || !email || !pass) { mostrarErrorAuth('Rellena todos los campos'); return; }
     if (pass.length < 8) { mostrarErrorAuth('La contrasena debe tener al menos 8 caracteres'); return; }
-
     limpiarErrorAuth();
     var btn = document.getElementById('btnRegistro');
     btn.disabled = true; btn.textContent = 'Creando cuenta...';
-
     registroApi(nombre, email, pass)
       .then(function() {
         cerrarAuth();
@@ -713,7 +601,6 @@ function getPbUrl() {
       })
       .finally(function() { btn.disabled = false; btn.textContent = 'Crear cuenta'; });
   }
-
   function cerrarSesion() {
     if (!confirm('Cerrar sesion?')) return;
     cerrarAuth();
@@ -721,19 +608,16 @@ function getPbUrl() {
     setEstado('desconectado', 'Sesion cerrada');
     mostrarToast('Sesion cerrada');
   }
-
   function cambiarAnyo(delta) {
     anyoActivo += delta;
     datos = []; renderizar(); cargarDatos();
   }
-
   function mostrarToast(msg) {
     var t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
     setTimeout(function() { t.classList.remove('show'); }, 2500);
   }
-
   // ── EVENTOS ──────────────────────────────────────────
   document.getElementById('btnConfig').addEventListener('click', abrirConfig);
   document.getElementById('btnUsuario').addEventListener('click', abrirAuth);
@@ -746,16 +630,11 @@ function getPbUrl() {
   document.getElementById('btnRegistro').addEventListener('click', hacerRegistro);
   document.getElementById('btnCerrarSesion').addEventListener('click', cerrarSesion);
   document.getElementById('btnCerrarPerfil').addEventListener('click', cerrarAuth);
-
-  // Cerrar overlays al pulsar fondo
   document.getElementById('overlay').addEventListener('click', function(e) { if (e.target === this) cerrarModal(); });
   document.getElementById('overlayConfig').addEventListener('click', function(e) { if (e.target === this) cerrarConfig(); });
   document.getElementById('overlayAuth').addEventListener('click', function(e) { if (e.target === this) cerrarAuth(); });
-
-  // Enter en campos de login/registro
   document.getElementById('inputPassword').addEventListener('keydown', function(e) { if (e.key === 'Enter') hacerLogin(); });
   document.getElementById('inputPasswordReg').addEventListener('keydown', function(e) { if (e.key === 'Enter') hacerRegistro(); });
-
   // ── INICIO ───────────────────────────────────────────
   actualizarAvatar();
   cargarDatos();
