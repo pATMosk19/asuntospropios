@@ -398,7 +398,7 @@
   }
 
 function getPbUrl() { 
-  return PB_URL_FIJA !== 'https://chiquitinas2.tailf3347a.ts.net' ? PB_URL_FIJA : (localStorage.getItem(STORAGE_KEY) || '');
+  return PB_URL_FIJA !== '__PB_URL__' ? PB_URL_FIJA : (localStorage.getItem(STORAGE_KEY) || '');
 }
   // ── AVATAR CABECERA ──────────────────────────────────
   function iniciales(user) {
