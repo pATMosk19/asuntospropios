@@ -734,7 +734,8 @@
   }
 
   function abrirConfig() {
-    document.getElementById('campoUrl').style.display = PB_URL_FIJA !== '__PB_URL__' ? 'none' : 'block';
+    var urlFija = PB_URL_FIJA !== '__PB_URL__';
+    document.getElementById('campoUrl').style.display = urlFija ? 'none' : 'block';
     document.getElementById('servidorConectado').style.display = urlFija ? 'flex' : 'none';
     document.getElementById('inputUrl').value = getPbUrl();
     document.getElementById('inputTotal').value = TOTAL;
