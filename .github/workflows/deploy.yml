@@ -13,8 +13,15 @@ jobs:
       - name: Inyectar URL del NAS
         run: |
           PB_URL=$(echo "${{ secrets.PB_URL }}" | tr -d '\n\r ')
-          perl -pi -e "s|__PB_URL__|${PB_URL}|g" index.html
-          
+          python3 -c "
+import sys
+with open('index.html', 'r', encoding='utf-8') as f:
+    content = f.read()
+content = content.replace('__PB_URL__', sys.argv[1])
+with open('index.html', 'w', encoding='utf-8') as f:
+    f.write(content)
+" "$PB_URL"
+
       - name: Publicar en GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
