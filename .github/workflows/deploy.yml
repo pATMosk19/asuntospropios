@@ -10,16 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Inyectar URL del NAS
-        env:
-          PB_URL: ${{ secrets.PB_URL }}
+      - name: Crear config.js con URL del NAS
         run: |
-          node -e "
-          const fs = require('fs');
-          const url = process.env.PB_URL.trim();
-          const html = fs.readFileSync('index.html', 'utf8');
-          fs.writeFileSync('index.html', html.replace('__PB_URL__', url));
-          "
+          PB_URL=$(echo "${{ secrets.PB_URL }}" | tr -d '\n\r ')
+          echo "var PB_URL_FIJA = '${PB_URL}';" > config.js
 
       - name: Publicar en GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
