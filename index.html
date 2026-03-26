@@ -735,6 +735,7 @@
 
   function abrirConfig() {
     document.getElementById('campoUrl').style.display = PB_URL_FIJA !== '__PB_URL__' ? 'none' : 'block';
+    document.getElementById('servidorConectado').style.display = urlFija ? 'flex' : 'none';
     document.getElementById('inputUrl').value = getPbUrl();
     document.getElementById('inputTotal').value = TOTAL;
     document.getElementById('overlayConfig').classList.add('visible');
