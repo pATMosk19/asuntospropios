@@ -352,11 +352,16 @@
 
   function actualizarAvatar() {
     var el = document.getElementById('avatarIcono');
+    var nuevo = document.createElement('span');
+    nuevo.id = 'avatarIcono';
     if (estaAutenticado()) {
-      el.outerHTML = '<span class="avatar-iniciales" id="avatarIcono">' + iniciales(authUser) + '</span>';
+      nuevo.className = 'avatar-iniciales';
+      nuevo.textContent = iniciales(authUser);
     } else {
-      el.outerHTML = '<span class="avatar-icono" id="avatarIcono">&#128100;</span>';
+      nuevo.className = 'avatar-icono';
+      nuevo.textContent = '👤';
     }
+    el.parentNode.replaceChild(nuevo, el);
   }
 
   // ── API ────────────────────────────────────────────────
@@ -374,7 +379,7 @@
     fetch(pbUrl + '/api/collections/' + COLECCION + '/records?perPage=200', { headers: getHeaders() })
       .then(function(res) {
         if (res.status === 401) { manejarNoAutorizado(); throw new Error('_401'); }
-        if (!res.ok) throw new Error('HTTP ' + res.status);
+        if (!res.ok) throw new Error('Error del servidor');
         return res.json();
       })
       .then(function(json) {
@@ -384,7 +389,7 @@
           return f.indexOf(String(anyoActivo)) >= 0;
         });
         conectado = true;
-        setEstado('conectado', 'Conectado &middot; ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : ''));
+        setEstado('conectado', 'Conectado · ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : ''));
         renderizar();
         comprobarNotificaciones();
       })
@@ -412,7 +417,7 @@
       method: 'DELETE', headers: getHeaders()
     }).then(function(res) {
       if (res.status === 401) { manejarNoAutorizado(); throw new Error('_401'); }
-      if (!res.ok) throw new Error('HTTP ' + res.status);
+      if (!res.ok) throw new Error('Error al eliminar el registro');
     });
   }
 
@@ -441,10 +446,10 @@
   }
 
   // ── UI ─────────────────────────────────────────────────
-  function setEstado(tipo, html) {
+  function setEstado(tipo, texto) {
     var el = document.getElementById('estadoConexion');
     el.className = 'estado-conexion ' + tipo;
-    document.getElementById('estadoTexto').innerHTML = html;
+    document.getElementById('estadoTexto').textContent = texto;
   }
 
   function renderizar() {
@@ -473,12 +478,34 @@
       if (isNaN(fecha.getTime())) return;
       var el = document.createElement('div');
       el.className = 'item';
-      el.innerHTML =
-        '<div class="item-fecha-box"><div class="item-dia">' + fecha.getDate() + '</div><div class="item-mes">' + MESES[fecha.getMonth()] + '</div></div>' +
-        '<div class="item-body"><div class="item-weekday">' + DIAS[fecha.getDay()] + ' &middot; ' + fecha.getFullYear() + '</div>' +
-        '<div class="item-nota ' + (item.nota ? '' : 'vacia') + '">' + (item.nota || 'Sin motivo') + '</div></div>' +
-        '<button class="btn-borrar" data-id="' + item.id + '">&times;</button>';
-      el.querySelector('.btn-borrar').addEventListener('click', function() { borrar(this.getAttribute('data-id')); });
+      var fechaBox = document.createElement('div');
+      fechaBox.className = 'item-fecha-box';
+      var diaEl = document.createElement('div');
+      diaEl.className = 'item-dia';
+      diaEl.textContent = fecha.getDate();
+      var mesEl = document.createElement('div');
+      mesEl.className = 'item-mes';
+      mesEl.textContent = MESES[fecha.getMonth()];
+      fechaBox.appendChild(diaEl);
+      fechaBox.appendChild(mesEl);
+      var bodyEl = document.createElement('div');
+      bodyEl.className = 'item-body';
+      var weekday = document.createElement('div');
+      weekday.className = 'item-weekday';
+      weekday.textContent = DIAS[fecha.getDay()] + ' · ' + fecha.getFullYear();
+      var notaEl = document.createElement('div');
+      notaEl.className = 'item-nota' + (item.nota ? '' : ' vacia');
+      notaEl.textContent = item.nota || 'Sin motivo';
+      bodyEl.appendChild(weekday);
+      bodyEl.appendChild(notaEl);
+      var btnBorrar = document.createElement('button');
+      btnBorrar.className = 'btn-borrar';
+      btnBorrar.setAttribute('data-id', item.id);
+      btnBorrar.textContent = '×';
+      btnBorrar.addEventListener('click', function() { borrar(this.getAttribute('data-id')); });
+      el.appendChild(fechaBox);
+      el.appendChild(bodyEl);
+      el.appendChild(btnBorrar);
       lista.appendChild(el);
     });
   }
@@ -501,7 +528,21 @@
     var yaVisto = localStorage.getItem(claveTrim);
     if (!yaVisto && usados > 0) {
       var txt = document.getElementById('notifTrimestralTxt');
-      txt.innerHTML = '<div class="notif-banner-titulo">Resumen trimestral</div>Llevas <strong>' + usados + '</strong> dia' + (usados !== 1 ? 's' : '') + ' usado' + (usados !== 1 ? 's' : '') + ' y te quedan <strong>' + restantes + '</strong> de ' + TOTAL + '.';
+      var plural = usados !== 1 ? 's' : '';
+      txt.innerHTML = '';
+      var tituloTrim = document.createElement('div');
+      tituloTrim.className = 'notif-banner-titulo';
+      tituloTrim.textContent = 'Resumen trimestral';
+      var s1 = document.createElement('strong');
+      s1.textContent = usados;
+      var s2 = document.createElement('strong');
+      s2.textContent = restantes;
+      txt.appendChild(tituloTrim);
+      txt.appendChild(document.createTextNode('Llevas '));
+      txt.appendChild(s1);
+      txt.appendChild(document.createTextNode(' dia' + plural + ' usado' + plural + ' y te quedan '));
+      txt.appendChild(s2);
+      txt.appendChild(document.createTextNode(' de ' + TOTAL + '.'));
       document.getElementById('notifTrimestral').classList.add('visible');
       localStorage.setItem(claveTrim, '1');
     }
@@ -539,6 +580,10 @@
     var nota = document.getElementById('inputNota').value.trim();
     if (!fecha) { mostrarToast('Elige una fecha primero'); return; }
     if (parseInt(fecha.split('-')[0]) !== anyoActivo) { mostrarToast('La fecha debe ser del ano ' + anyoActivo); return; }
+    var fechaObj = new Date(fecha + 'T12:00:00');
+    if (isNaN(fechaObj.getTime())) { mostrarToast('Fecha no valida'); return; }
+    var yaExiste = datos.some(function(item) { return (item.fecha || '').substring(0, 10) === fecha; });
+    if (yaExiste) { mostrarToast('Ya tienes ese dia registrado'); return; }
     var btn = document.getElementById('btnGuardar');
     btn.disabled = true; btn.textContent = 'Guardando...';
     crearRegistro(fecha, nota)
