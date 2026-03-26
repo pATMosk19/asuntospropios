@@ -12,110 +12,122 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <script src="config.js"></script>
   <style>
-    :root { --amarillo:#F5C800;--rojo:#D0021B;--bg:#FAFAF7;--surface:#FFFFFF;--surface2:#F2F2EE;--texto:#1A1A1A;--texto-suave:#6B6B6B;--borde:#E8E8E2;--sombra:0 2px 16px rgba(0,0,0,0.07);--radio:20px;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px); }
-    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);min-height:100dvh;padding-top:var(--safe-top);padding-bottom:calc(var(--safe-bottom) + 80px);overflow-x:hidden}
-    header{background:var(--amarillo);padding:calc(var(--safe-top) + 20px) 24px 24px;position:sticky;top:0;z-index:100}
-    .header-inner{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-    .header-titulo{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.1;color:#1A1A1A}
-    .header-sub{font-size:13px;color:rgba(0,0,0,0.5);margin-top:4px;font-weight:400}
-    .header-derecha{display:flex;align-items:flex-start;gap:8px}
-    .btn-config{background:rgba(0,0,0,0.08);border:none;border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:4px;transition:background .15s}
-    .btn-config:active{background:rgba(0,0,0,0.18)}
-    .btn-avatar{background:var(--texto);border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:4px;transition:opacity .15s;overflow:hidden}
-    .btn-avatar:active{opacity:.75}
-    .avatar-iniciales{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--amarillo);line-height:1}
-    .avatar-icono{font-size:16px;line-height:1}
-    .contador-wrap{display:flex;flex-direction:column;align-items:flex-end}
-    .contador{display:flex;align-items:baseline;gap:3px}
-    .contador-num{font-family:'DM Serif Display',serif;font-size:52px;line-height:1;color:var(--rojo)}
-    .contador-total{font-size:20px;color:rgba(0,0,0,0.35);font-family:'DM Serif Display',serif}
-    .contador-label{font-size:11px;color:rgba(0,0,0,0.45);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;font-weight:500}
-    .progreso-wrap{background:var(--amarillo);padding:0 24px 20px}
-    .progreso-track{background:rgba(0,0,0,0.12);border-radius:99px;height:8px;overflow:hidden}
-    .progreso-fill{height:100%;background:var(--rojo);border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-    .anyo-selector{display:flex;align-items:center;justify-content:center;gap:16px;padding:12px 0 0}
-    .anyo-btn{background:none;border:none;font-size:22px;color:var(--texto);cursor:pointer;padding:4px 8px;opacity:.5;transition:opacity .15s}
-    .anyo-btn:active{opacity:1}
-    .anyo-label{font-family:'DM Serif Display',serif;font-size:20px;color:var(--texto);min-width:60px;text-align:center}
-    main{padding:24px 16px 0;display:flex;flex-direction:column;gap:20px}
-    .estado-conexion{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:500}
-    .estado-conexion.conectado{background:#E8F5E9;color:#2E7D32}
-    .estado-conexion.desconectado{background:#FFF3E0;color:#E65100}
-    .estado-conexion.cargando{background:var(--surface2);color:var(--texto-suave)}
-    .estado-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-    .conectado .estado-dot{background:#4CAF50}
-    .desconectado .estado-dot{background:#FF9800}
-    .cargando .estado-dot{background:#9E9E9E;animation:pulsar 1s infinite}
-    @keyframes pulsar{0%,100%{opacity:1}50%{opacity:.3}}
-    .btn-anyadir{background:var(--texto);color:#fff;border:none;border-radius:var(--radio);padding:18px 24px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;box-shadow:var(--sombra);transition:transform .15s,opacity .15s}
-    .btn-anyadir:active{transform:scale(.97);opacity:.85}
-    .btn-icon{width:26px;height:26px;background:var(--amarillo);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;line-height:1;color:#1A1A1A;flex-shrink:0}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s}
-    .overlay.visible{opacity:1;pointer-events:all}
-    .sheet{background:var(--surface);border-radius:24px 24px 0 0;padding:12px 24px calc(var(--safe-bottom) + 32px);width:100%;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:92dvh;overflow-y:auto}
-    .overlay.visible .sheet{transform:translateY(0)}
-    .sheet-handle{width:36px;height:4px;background:var(--borde);border-radius:99px;margin:0 auto 24px;flex-shrink:0}
-    .sheet-titulo{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:24px}
-    .campo-grupo{margin-bottom:18px}
-    label{font-size:13px;font-weight:600;color:var(--texto-suave);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:8px}
-    input[type="date"],input[type="text"],input[type="email"],input[type="password"],textarea{width:100%;background:var(--surface2);border:2px solid transparent;border-radius:14px;padding:14px 16px;font-family:'DM Sans',sans-serif;font-size:16px;color:var(--texto);outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none}
-    input:focus,textarea:focus{border-color:var(--amarillo)}
-    textarea{resize:none;height:90px}
-    .campo-ayuda{font-size:12px;color:var(--texto-suave);margin-top:6px;line-height:1.5}
-    .btn-guardar{background:var(--amarillo);color:var(--texto);border:none;border-radius:14px;padding:17px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;width:100%;cursor:pointer;margin-top:6px;transition:transform .15s,opacity .15s}
-    .btn-guardar:active{transform:scale(.97);opacity:.85}
-    .btn-guardar:disabled{opacity:.5;cursor:not-allowed}
-    .tabs{display:flex;background:var(--surface2);border-radius:14px;padding:4px;margin-bottom:24px}
-    .tab-btn{flex:1;border:none;background:none;border-radius:10px;padding:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--texto-suave);cursor:pointer;transition:background .2s,color .2s}
-    .tab-btn.activo{background:var(--surface);color:var(--texto);box-shadow:0 1px 6px rgba(0,0,0,0.08)}
-    .perfil-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px 0 24px}
-    .perfil-avatar{width:72px;height:72px;background:var(--texto);border-radius:50%;display:flex;align-items:center;justify-content:center}
-    .perfil-avatar-txt{font-family:'DM Sans',sans-serif;font-size:28px;font-weight:600;color:var(--amarillo)}
-    .perfil-nombre{font-family:'DM Serif Display',serif;font-size:22px;color:var(--texto)}
-    .perfil-email{font-size:14px;color:var(--texto-suave)}
-    .btn-secundario{background:var(--surface2);color:var(--texto);border:none;border-radius:14px;padding:15px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;width:100%;cursor:pointer;margin-top:4px;transition:background .15s}
-    .btn-secundario:active{background:var(--borde)}
-    .btn-peligro{background:#FFF0F0;color:var(--rojo);border:none;border-radius:14px;padding:15px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;width:100%;cursor:pointer;margin-top:8px;transition:background .15s}
-    .btn-peligro:active{background:#FFD6D6}
-    .error-auth{background:#FFF0F0;border:1.5px solid #FFBABA;border-radius:12px;padding:12px 14px;font-size:14px;color:var(--rojo);margin-bottom:16px;display:none}
-    .error-auth.visible{display:block}
-    .lista-titulo{font-size:13px;font-weight:600;color:var(--texto-suave);text-transform:uppercase;letter-spacing:.08em;padding:0 4px}
-    .lista{display:flex;flex-direction:column;gap:10px}
-    .item{background:var(--surface);border-radius:var(--radio);padding:16px 18px;display:flex;align-items:flex-start;gap:14px;box-shadow:var(--sombra);animation:entrar .3s cubic-bezier(.4,0,.2,1) both}
-    @keyframes entrar{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    .item-fecha-box{background:var(--amarillo);border-radius:12px;padding:8px 10px;text-align:center;flex-shrink:0;min-width:48px}
-    .item-dia{font-family:'DM Serif Display',serif;font-size:22px;line-height:1;color:#1A1A1A}
-    .item-mes{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:rgba(0,0,0,0.5);margin-top:2px}
-    .item-body{flex:1;min-width:0}
-    .item-weekday{font-size:12px;color:var(--texto-suave);margin-bottom:2px}
-    .item-nota{font-size:15px;font-weight:500;color:var(--texto);word-break:break-word}
-    .item-nota.vacia{color:var(--texto-suave);font-style:italic;font-weight:400}
-    .item-acciones{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
-    .btn-editar{background:none;border:none;padding:4px;cursor:pointer;color:var(--texto-suave);font-size:16px;line-height:1;transition:color .15s}
-    .btn-editar:active{color:var(--amarillo)}
-    .btn-borrar{background:none;border:none;padding:4px;cursor:pointer;color:var(--borde);font-size:20px;line-height:1;transition:color .15s}
-    .btn-borrar:active{color:var(--rojo)}
-    .vacio{text-align:center;padding:48px 24px;color:var(--texto-suave)}
-    .vacio-emoji{font-size:48px;margin-bottom:12px}
-    .vacio-titulo{font-family:'DM Serif Display',serif;font-size:20px;color:var(--texto);margin-bottom:6px}
-    .vacio-sub{font-size:14px;line-height:1.5}
-    .alerta-agotado{background:#FFF0F0;border:2px solid var(--rojo);border-radius:var(--radio);padding:16px 18px;align-items:center;gap:12px;display:none}
-    .alerta-agotado.visible{display:flex}
-    .alerta-agotado-texto{font-size:14px;font-weight:500;color:var(--rojo)}
-    .toast{position:fixed;bottom:calc(var(--safe-bottom) + 24px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--texto);color:#fff;padding:12px 20px;border-radius:99px;font-size:14px;font-weight:500;white-space:nowrap;opacity:0;transition:opacity .25s,transform .25s;z-index:500;pointer-events:none}
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-    .notif-banner{border-radius:var(--radio);padding:14px 18px;display:none;align-items:flex-start;gap:12px}
-    .notif-banner.visible{display:flex}
-    .notif-banner.amarillo{background:#FFFBEB;border:2px solid var(--amarillo)}
-    .notif-banner.naranja{background:#FFF7ED;border:2px solid #F97316}
-    .notif-banner.azul{background:#EFF6FF;border:2px solid #3B82F6}
-    .notif-banner-icon{font-size:22px;flex-shrink:0}
-    .notif-banner-txt{font-size:13px;font-weight:500;line-height:1.4}
-    .notif-banner-titulo{font-weight:700;font-size:14px;margin-bottom:2px}
+    :root {
+      --amarillo: #F5C800; --rojo: #D0021B; --bg: #FAFAF7; --surface: #FFFFFF;
+      --surface2: #F2F2EE; --texto: #1A1A1A; --texto-suave: #6B6B6B;
+      --borde: #E8E8E2; --sombra: 0 2px 16px rgba(0,0,0,0.07); --radio: 20px;
+      --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--texto); min-height: 100dvh; padding-top: var(--safe-top); padding-bottom: calc(var(--safe-bottom) + 80px); overflow-x: hidden; }
+    header { background: var(--amarillo); padding: calc(var(--safe-top) + 20px) 24px 24px; position: sticky; top: 0; z-index: 100; }
+    .header-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .header-titulo { font-family: 'DM Serif Display', serif; font-size: 28px; line-height: 1.1; color: #1A1A1A; }
+    .header-sub { font-size: 13px; color: rgba(0,0,0,0.5); margin-top: 4px; font-weight: 400; }
+    .header-derecha { display: flex; align-items: flex-start; gap: 8px; }
+    .btn-config { background: rgba(0,0,0,0.08); border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px; transition: background 0.15s; }
+    .btn-config:active { background: rgba(0,0,0,0.18); }
+    .btn-avatar { background: var(--texto); border: none; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px; transition: opacity 0.15s; overflow: hidden; }
+    .btn-avatar:active { opacity: 0.75; }
+    .btn-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .avatar-iniciales { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--amarillo); line-height: 1; }
+    .avatar-icono { font-size: 16px; line-height: 1; }
+    .contador-wrap { display: flex; flex-direction: column; align-items: flex-end; }
+    .contador { display: flex; align-items: baseline; gap: 3px; }
+    .contador-num { font-family: 'DM Serif Display', serif; font-size: 52px; line-height: 1; color: var(--rojo); }
+    .contador-total { font-size: 20px; color: rgba(0,0,0,0.35); font-family: 'DM Serif Display', serif; }
+    .contador-label { font-size: 11px; color: rgba(0,0,0,0.45); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; font-weight: 500; }
+    .progreso-wrap { background: var(--amarillo); padding: 0 24px 20px; }
+    .progreso-track { background: rgba(0,0,0,0.12); border-radius: 99px; height: 8px; overflow: hidden; }
+    .progreso-fill { height: 100%; background: var(--rojo); border-radius: 99px; transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+    .anyo-selector { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 12px 0 0; }
+    .anyo-btn { background: none; border: none; font-size: 22px; color: var(--texto); cursor: pointer; padding: 4px 8px; opacity: 0.5; transition: opacity 0.15s; }
+    .anyo-btn:active { opacity: 1; }
+    .anyo-label { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--texto); min-width: 60px; text-align: center; }
+    main { padding: 24px 16px 0; display: flex; flex-direction: column; gap: 20px; }
+    .estado-conexion { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; font-size: 13px; font-weight: 500; }
+    .estado-conexion.conectado    { background: #E8F5E9; color: #2E7D32; }
+    .estado-conexion.desconectado { background: #FFF3E0; color: #E65100; }
+    .estado-conexion.cargando     { background: var(--surface2); color: var(--texto-suave); }
+    .estado-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .conectado .estado-dot    { background: #4CAF50; }
+    .desconectado .estado-dot { background: #FF9800; }
+    .cargando .estado-dot     { background: #9E9E9E; animation: pulsar 1s infinite; }
+    @keyframes pulsar { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .btn-anyadir { background: var(--texto); color: #fff; border: none; border-radius: var(--radio); padding: 18px 24px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: var(--sombra); transition: transform 0.15s, opacity 0.15s; }
+    .btn-anyadir:active { transform: scale(0.97); opacity: 0.85; }
+    .btn-icon { width: 26px; height: 26px; background: var(--amarillo); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; line-height: 1; color: #1A1A1A; flex-shrink: 0; }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    .overlay.visible { opacity: 1; pointer-events: all; }
+    .sheet { background: var(--surface); border-radius: 24px 24px 0 0; padding: 12px 24px calc(var(--safe-bottom) + 32px); width: 100%; transform: translateY(100%); transition: transform 0.3s cubic-bezier(.4,0,.2,1); max-height: 92dvh; overflow-y: auto; }
+    .overlay.visible .sheet { transform: translateY(0); }
+    .sheet-handle { width: 36px; height: 4px; background: var(--borde); border-radius: 99px; margin: 0 auto 24px; flex-shrink: 0; }
+    .sheet-titulo { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 24px; }
+    .campo-grupo { margin-bottom: 18px; }
+    label { font-size: 13px; font-weight: 600; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 8px; }
+    input[type="date"], input[type="text"], input[type="email"], input[type="password"], textarea { width: 100%; background: var(--surface2); border: 2px solid transparent; border-radius: 14px; padding: 14px 16px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--texto); outline: none; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; }
+    input:focus, textarea:focus { border-color: var(--amarillo); }
+    textarea { resize: none; height: 90px; }
+    .campo-ayuda { font-size: 12px; color: var(--texto-suave); margin-top: 6px; line-height: 1.5; }
+    .btn-guardar { background: var(--amarillo); color: var(--texto); border: none; border-radius: 14px; padding: 17px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 6px; transition: transform 0.15s, opacity 0.15s; }
+    .btn-guardar:active { transform: scale(0.97); opacity: 0.85; }
+    .btn-guardar:disabled { opacity: 0.5; cursor: not-allowed; }
+    .tabs { display: flex; background: var(--surface2); border-radius: 14px; padding: 4px; margin-bottom: 24px; }
+    .tab-btn { flex: 1; border: none; background: none; border-radius: 10px; padding: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--texto-suave); cursor: pointer; transition: background 0.2s, color 0.2s; }
+    .tab-btn.activo { background: var(--surface); color: var(--texto); box-shadow: 0 1px 6px rgba(0,0,0,0.08); }
+    .perfil-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 16px 0 24px; }
+    .perfil-avatar-wrap { position: relative; cursor: pointer; }
+    .perfil-avatar { width: 80px; height: 80px; background: var(--texto); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: opacity 0.2s; }
+    .perfil-avatar-wrap:active .perfil-avatar { opacity: 0.8; }
+    .perfil-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .perfil-avatar-txt { font-family: 'DM Sans', sans-serif; font-size: 30px; font-weight: 600; color: var(--amarillo); }
+    .perfil-camara { position: absolute; bottom: 0; right: 0; background: var(--amarillo); border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 2px solid var(--surface); }
+    .perfil-hint { font-size: 12px; color: var(--texto-suave); }
+    .perfil-nombre { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--texto); }
+    .perfil-email { font-size: 14px; color: var(--texto-suave); }
+    .btn-secundario { background: var(--surface2); color: var(--texto); border: none; border-radius: 14px; padding: 15px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 4px; transition: background 0.15s; }
+    .btn-secundario:active { background: var(--borde); }
+    .btn-peligro { background: #FFF0F0; color: var(--rojo); border: none; border-radius: 14px; padding: 15px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; width: 100%; cursor: pointer; margin-top: 8px; transition: background 0.15s; }
+    .btn-peligro:active { background: #FFD6D6; }
+    .error-auth { background: #FFF0F0; border: 1.5px solid #FFBABA; border-radius: 12px; padding: 12px 14px; font-size: 14px; color: var(--rojo); margin-bottom: 16px; display: none; }
+    .error-auth.visible { display: block; }
+    .lista-titulo { font-size: 13px; font-weight: 600; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 4px; }
+    .lista { display: flex; flex-direction: column; gap: 10px; }
+    .item { background: var(--surface); border-radius: var(--radio); padding: 16px 18px; display: flex; align-items: flex-start; gap: 14px; box-shadow: var(--sombra); animation: entrar 0.3s cubic-bezier(.4,0,.2,1) both; }
+    @keyframes entrar { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .item-fecha-box { background: var(--amarillo); border-radius: 12px; padding: 8px 10px; text-align: center; flex-shrink: 0; min-width: 48px; }
+    .item-dia { font-family: 'DM Serif Display', serif; font-size: 22px; line-height: 1; color: #1A1A1A; }
+    .item-mes { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(0,0,0,0.5); margin-top: 2px; }
+    .item-body { flex: 1; min-width: 0; }
+    .item-weekday { font-size: 12px; color: var(--texto-suave); margin-bottom: 2px; }
+    .item-nota { font-size: 15px; font-weight: 500; color: var(--texto); word-break: break-word; }
+    .item-nota.vacia { color: var(--texto-suave); font-style: italic; font-weight: 400; }
+    .item-acciones { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+    .btn-editar { background: none; border: none; padding: 4px; cursor: pointer; color: var(--texto-suave); font-size: 16px; line-height: 1; transition: color 0.15s; }
+    .btn-editar:active { color: var(--amarillo); }
+    .btn-borrar { background: none; border: none; padding: 4px; cursor: pointer; color: var(--borde); font-size: 20px; line-height: 1; transition: color 0.15s; }
+    .btn-borrar:active { color: var(--rojo); }
+    .vacio { text-align: center; padding: 48px 24px; color: var(--texto-suave); }
+    .vacio-emoji { font-size: 48px; margin-bottom: 12px; }
+    .vacio-titulo { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--texto); margin-bottom: 6px; }
+    .vacio-sub { font-size: 14px; line-height: 1.5; }
+    .alerta-agotado { background: #FFF0F0; border: 2px solid var(--rojo); border-radius: var(--radio); padding: 16px 18px; align-items: center; gap: 12px; display: none; }
+    .alerta-agotado.visible { display: flex; }
+    .alerta-agotado-texto { font-size: 14px; font-weight: 500; color: var(--rojo); }
+    .toast { position: fixed; bottom: calc(var(--safe-bottom) + 24px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--texto); color: #fff; padding: 12px 20px; border-radius: 99px; font-size: 14px; font-weight: 500; white-space: nowrap; opacity: 0; transition: opacity 0.25s, transform 0.25s; z-index: 500; pointer-events: none; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .notif-banner { border-radius: var(--radio); padding: 14px 18px; display: none; align-items: flex-start; gap: 12px; }
+    .notif-banner.visible { display: flex; }
+    .notif-banner.amarillo { background: #FFFBEB; border: 2px solid var(--amarillo); }
+    .notif-banner.naranja  { background: #FFF7ED; border: 2px solid #F97316; }
+    .notif-banner.azul     { background: #EFF6FF; border: 2px solid #3B82F6; }
+    .notif-banner-icon { font-size: 22px; flex-shrink: 0; }
+    .notif-banner-txt { font-size: 13px; font-weight: 500; line-height: 1.4; }
+    .notif-banner-titulo { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
   </style>
 </head>
 <body>
+
 <header>
   <div class="header-inner">
     <div>
@@ -124,9 +136,14 @@
     </div>
     <div class="header-derecha">
       <button class="btn-config" id="btnConfig" title="Configurar">&#9881;&#65039;</button>
-      <button class="btn-avatar" id="btnUsuario" title="Usuario"><span class="avatar-icono" id="avatarIcono">&#128100;</span></button>
+      <button class="btn-avatar" id="btnUsuario" title="Usuario">
+        <span class="avatar-icono" id="avatarIcono">&#128100;</span>
+      </button>
       <div class="contador-wrap">
-        <div class="contador"><span class="contador-num" id="usados">0</span><span class="contador-total" id="contadorTotal">/6</span></div>
+        <div class="contador">
+          <span class="contador-num" id="usados">0</span>
+          <span class="contador-total" id="contadorTotal">/6</span>
+        </div>
         <div class="contador-label">dias usados</div>
       </div>
     </div>
@@ -137,399 +154,697 @@
     <button class="anyo-btn" id="btnAnyoMas">&#8250;</button>
   </div>
 </header>
-<div class="progreso-wrap"><div class="progreso-track"><div class="progreso-fill" id="progreso" style="width:0%"></div></div></div>
+
+<div class="progreso-wrap">
+  <div class="progreso-track">
+    <div class="progreso-fill" id="progreso" style="width:0%"></div>
+  </div>
+</div>
+
 <main>
-  <div class="notif-banner naranja" id="notifUltimoDia"><span class="notif-banner-icon">&#128680;</span><div class="notif-banner-txt"><div class="notif-banner-titulo">Solo te queda 1 dia</div>Usalo antes de que acabe el ano o lo perderas.</div></div>
-  <div class="notif-banner amarillo" id="notifMitad"><span class="notif-banner-icon">&#128202;</span><div class="notif-banner-txt"><div class="notif-banner-titulo">Llevas la mitad</div>Has usado la mitad de tus dias de asuntos propios.</div></div>
-  <div class="notif-banner azul" id="notifDiciembre"><span class="notif-banner-icon">&#128197;</span><div class="notif-banner-txt"><div class="notif-banner-titulo">Quedan dias por usar</div>Estamos en diciembre y aun te quedan dias. Pidelos antes del 31.</div></div>
-  <div class="notif-banner azul" id="notifTrimestral"><span class="notif-banner-icon">&#128204;</span><div class="notif-banner-txt" id="notifTrimestralTxt"></div></div>
-  <div class="estado-conexion cargando" id="estadoConexion"><div class="estado-dot"></div><span id="estadoTexto">Conectando...</span></div>
-  <div class="alerta-agotado" id="alertaAgotado"><span class="alerta-agotado-texto">&#9888;&#65039; Has agotado todos tus dias de asuntos propios este ano.</span></div>
-  <button class="btn-anyadir" id="btnAnyadir"><span class="btn-icon">+</span>Registrar dia de asunto propio</button>
+  <div class="notif-banner naranja" id="notifUltimoDia">
+    <span class="notif-banner-icon">&#128680;</span>
+    <div class="notif-banner-txt">
+      <div class="notif-banner-titulo">Solo te queda 1 dia</div>
+      Usalo antes de que acabe el ano o lo perderas.
+    </div>
+  </div>
+  <div class="notif-banner amarillo" id="notifMitad">
+    <span class="notif-banner-icon">&#128202;</span>
+    <div class="notif-banner-txt">
+      <div class="notif-banner-titulo">Llevas la mitad</div>
+      Has usado la mitad de tus dias de asuntos propios.
+    </div>
+  </div>
+  <div class="notif-banner azul" id="notifDiciembre">
+    <span class="notif-banner-icon">&#128197;</span>
+    <div class="notif-banner-txt">
+      <div class="notif-banner-titulo">Quedan dias por usar</div>
+      Estamos en diciembre y aun te quedan dias. Pidelos antes del 31.
+    </div>
+  </div>
+  <div class="notif-banner azul" id="notifTrimestral">
+    <span class="notif-banner-icon">&#128204;</span>
+    <div class="notif-banner-txt" id="notifTrimestralTxt"></div>
+  </div>
+  <div class="estado-conexion cargando" id="estadoConexion">
+    <div class="estado-dot"></div>
+    <span id="estadoTexto">Conectando...</span>
+  </div>
+  <div class="alerta-agotado" id="alertaAgotado">
+    <span class="alerta-agotado-texto">&#9888;&#65039; Has agotado todos tus dias de asuntos propios este ano.</span>
+  </div>
+  <button class="btn-anyadir" id="btnAnyadir">
+    <span class="btn-icon">+</span>
+    Registrar dia de asunto propio
+  </button>
   <div class="lista-titulo" id="listaTitulo" style="display:none">Dias registrados</div>
   <div class="lista" id="lista"></div>
-  <div class="vacio" id="vacio"><div class="vacio-emoji">&#128204;</div><div class="vacio-titulo">Sin registros aun</div><div class="vacio-sub">Pulsa el boton para registrar<br>tu primer dia de asunto propio</div></div>
+  <div class="vacio" id="vacio">
+    <div class="vacio-emoji">&#128204;</div>
+    <div class="vacio-titulo">Sin registros aun</div>
+    <div class="vacio-sub">Pulsa el boton para registrar<br>tu primer dia de asunto propio</div>
+  </div>
 </main>
-<div class="overlay" id="overlay"><div class="sheet"><div class="sheet-handle"></div><div class="sheet-titulo" id="modalTitulo">Nuevo dia</div><div class="campo-grupo"><label for="inputFecha">Fecha</label><input type="date" id="inputFecha" /></div><div class="campo-grupo"><label for="inputNota">Motivo <span style="font-weight:300;text-transform:none">(opcional)</span></label><textarea id="inputNota" placeholder="Ej: gestion medica, tramite personal..."></textarea></div><button class="btn-guardar" id="btnGuardar">Guardar</button></div></div>
-<div class="overlay" id="overlayConfig"><div class="sheet"><div class="sheet-handle"></div><div class="sheet-titulo">Configuracion</div><div class="campo-grupo" id="campoUrl"><label for="inputUrl">URL del NAS (PocketBase)</label><input type="text" id="inputUrl" placeholder="https://tu-NAS" autocapitalize="none" autocorrect="off" spellcheck="false" /><div class="campo-ayuda">Solo se guarda en este dispositivo. &#128274;</div></div><div class="campo-grupo"><label for="inputTotal">Dias disponibles por ano</label><input type="text" id="inputTotal" placeholder="6" inputmode="numeric" /><div class="campo-ayuda">Por defecto 6. Cambia si tu convenio es diferente.</div></div><button class="btn-guardar" id="btnGuardarConfig">Guardar y conectar</button></div></div>
-<div class="overlay" id="overlayAuth"><div class="sheet"><div class="sheet-handle"></div><div id="vistaLogin"><div class="sheet-titulo">Acceder</div><div class="tabs"><button class="tab-btn activo" id="tabLogin">Entrar</button><button class="tab-btn" id="tabRegistro">Registrarse</button></div><div class="error-auth" id="errorAuth"></div><div id="formLogin"><div class="campo-grupo"><label for="inputEmail">Correo electronico</label><input type="email" id="inputEmail" placeholder="tu@correo.com" autocapitalize="none" autocorrect="off" /></div><div class="campo-grupo"><label for="inputPassword">Contrasena</label><input type="password" id="inputPassword" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" /></div><button class="btn-guardar" id="btnLogin">Entrar</button></div><div id="formRegistro" style="display:none"><div class="campo-grupo"><label for="inputNombreReg">Nombre</label><input type="text" id="inputNombreReg" placeholder="Tu nombre" autocapitalize="words" /></div><div class="campo-grupo"><label for="inputEmailReg">Correo electronico</label><input type="email" id="inputEmailReg" placeholder="tu@correo.com" autocapitalize="none" autocorrect="off" /></div><div class="campo-grupo"><label for="inputPasswordReg">Contrasena</label><input type="password" id="inputPasswordReg" placeholder="Minimo 8 caracteres" /></div><button class="btn-guardar" id="btnRegistro">Crear cuenta</button></div></div><div id="vistaPerfil" style="display:none"><div class="perfil-wrap"><div class="perfil-avatar"><span class="perfil-avatar-txt" id="perfilAvatarTxt">?</span></div><div class="perfil-nombre" id="perfilNombre">Usuario</div><div class="perfil-email" id="perfilEmail"></div></div><button class="btn-secundario" id="btnCerrarPerfil">Cerrar</button><button class="btn-peligro" id="btnCerrarSesion">Cerrar sesion</button></div></div></div>
+
+<!-- MODAL NUEVO / EDITAR DIA -->
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-titulo" id="modalTitulo">Nuevo dia</div>
+    <div class="campo-grupo">
+      <label for="inputFecha">Fecha</label>
+      <input type="date" id="inputFecha" />
+    </div>
+    <div class="campo-grupo">
+      <label for="inputNota">Motivo <span style="font-weight:300;text-transform:none">(opcional)</span></label>
+      <textarea id="inputNota" placeholder="Ej: gestion medica, tramite personal..."></textarea>
+    </div>
+    <button class="btn-guardar" id="btnGuardar">Guardar</button>
+  </div>
+</div>
+
+<!-- MODAL CONFIGURACION -->
+<div class="overlay" id="overlayConfig">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-titulo">Configuracion</div>
+    <div class="campo-grupo" id="campoUrl">
+      <label for="inputUrl">URL del NAS (PocketBase)</label>
+      <input type="text" id="inputUrl" placeholder="https://tu-NAS" autocapitalize="none" autocorrect="off" spellcheck="false" />
+      <div class="campo-ayuda">Solo se guarda en este dispositivo. &#128274;</div>
+    </div>
+    <div class="campo-grupo">
+      <label for="inputTotal">Dias disponibles por ano</label>
+      <input type="text" id="inputTotal" placeholder="6" inputmode="numeric" />
+      <div class="campo-ayuda">Por defecto 6. Cambia si tu convenio es diferente.</div>
+    </div>
+    <button class="btn-guardar" id="btnGuardarConfig">Guardar y conectar</button>
+  </div>
+</div>
+
+<!-- MODAL AUTH / PERFIL -->
+<div class="overlay" id="overlayAuth">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div id="vistaLogin">
+      <div class="sheet-titulo">Acceder</div>
+      <div class="tabs">
+        <button class="tab-btn activo" id="tabLogin">Entrar</button>
+        <button class="tab-btn" id="tabRegistro">Registrarse</button>
+      </div>
+      <div class="error-auth" id="errorAuth"></div>
+      <div id="formLogin">
+        <div class="campo-grupo">
+          <label for="inputEmail">Correo electronico</label>
+          <input type="email" id="inputEmail" placeholder="tu@correo.com" autocapitalize="none" autocorrect="off" />
+        </div>
+        <div class="campo-grupo">
+          <label for="inputPassword">Contrasena</label>
+          <input type="password" id="inputPassword" placeholder="••••••••" />
+        </div>
+        <button class="btn-guardar" id="btnLogin">Entrar</button>
+      </div>
+      <div id="formRegistro" style="display:none">
+        <div class="campo-grupo">
+          <label for="inputNombreReg">Nombre</label>
+          <input type="text" id="inputNombreReg" placeholder="Tu nombre" autocapitalize="words" />
+        </div>
+        <div class="campo-grupo">
+          <label for="inputEmailReg">Correo electronico</label>
+          <input type="email" id="inputEmailReg" placeholder="tu@correo.com" autocapitalize="none" autocorrect="off" />
+        </div>
+        <div class="campo-grupo">
+          <label for="inputPasswordReg">Contrasena</label>
+          <input type="password" id="inputPasswordReg" placeholder="Minimo 8 caracteres" />
+        </div>
+        <button class="btn-guardar" id="btnRegistro">Crear cuenta</button>
+      </div>
+    </div>
+    <div id="vistaPerfil" style="display:none">
+      <div class="perfil-wrap">
+        <div class="perfil-avatar-wrap" id="perfilAvatarWrap">
+          <div class="perfil-avatar" id="perfilAvatar">
+            <span class="perfil-avatar-txt" id="perfilAvatarTxt">?</span>
+          </div>
+          <div class="perfil-camara">&#128247;</div>
+        </div>
+        <div class="perfil-hint">Pulsa para cambiar foto</div>
+        <div class="perfil-nombre" id="perfilNombre">Usuario</div>
+        <div class="perfil-email" id="perfilEmail"></div>
+      </div>
+      <input type="file" id="inputAvatar" accept="image/*" style="display:none" />
+      <button class="btn-secundario" id="btnCerrarPerfil">Cerrar</button>
+      <button class="btn-peligro" id="btnCerrarSesion">Cerrar sesion</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
+
 <script>
-var COLECCION='Asuntos',STORAGE_KEY='pb_url';
-var PB_URL_FIJA=(typeof PB_URL_FIJA!=='undefined')?PB_URL_FIJA:'__PB_URL__';
-var AUTH_TOKEN_KEY='pb_token',AUTH_USER_KEY='pb_user',TOTAL_KEY='pb_total';
-var MESES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-var DIAS=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
-var anyoActivo=new Date().getFullYear(),datos=[],conectado=false;
-var TOTAL=parseInt(localStorage.getItem(TOTAL_KEY)||'6',10);
-var authToken=localStorage.getItem(AUTH_TOKEN_KEY)||'';
-var authUser=JSON.parse(localStorage.getItem(AUTH_USER_KEY)||'null');
-var editandoId=null;
+  var COLECCION = 'Asuntos';
+  var STORAGE_KEY = 'pb_url';
+  var PB_URL_FIJA = (typeof PB_URL_FIJA !== 'undefined') ? PB_URL_FIJA : '__PB_URL__';
+  var AUTH_TOKEN_KEY = 'pb_token';
+  var AUTH_USER_KEY = 'pb_user';
+  var TOTAL_KEY = 'pb_total';
+  var MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  var DIAS = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
 
-function estaAutenticado(){return!!(authToken&&authUser)}
-function getHeaders(){var h={'Content-Type':'application/json'};if(authToken)h['Authorization']=authToken;return h}
-function getPbUrl(){return PB_URL_FIJA!=='__PB_URL__'?PB_URL_FIJA:(localStorage.getItem(STORAGE_KEY)||'')}
+  var anyoActivo = new Date().getFullYear();
+  var datos = [];
+  var conectado = false;
+  var TOTAL = parseInt(localStorage.getItem(TOTAL_KEY) || '6', 10);
+  var authToken = localStorage.getItem(AUTH_TOKEN_KEY) || '';
+  var authUser = JSON.parse(localStorage.getItem(AUTH_USER_KEY) || 'null');
+  var editandoId = null;
 
-function guardarSesion(token,user){
-  authToken=token;authUser=user;
-  localStorage.setItem(AUTH_TOKEN_KEY,token);
-  localStorage.setItem(AUTH_USER_KEY,JSON.stringify(user));
-  actualizarAvatar();
-}
-function limpiarSesion(){
-  authToken='';authUser=null;
-  localStorage.removeItem(AUTH_TOKEN_KEY);localStorage.removeItem(AUTH_USER_KEY);
-  datos=[];conectado=false;actualizarAvatar();renderizar();
-}
-function manejarNoAutorizado(){
-  limpiarSesion();setEstado('desconectado','Sesion caducada, vuelve a entrar');setTimeout(abrirAuth,400);
-}
-function iniciales(user){
-  if(!user)return'';
-  var n=(user.name||'').trim();
-  if(n){var p=n.split(' ');return p.length>=2?(p[0][0]+p[1][0]).toUpperCase():p[0].substring(0,2).toUpperCase()}
-  return(user.email||'?')[0].toUpperCase();
-}
+  function estaAutenticado() { return !!(authToken && authUser); }
 
-// AVATAR sin innerHTML
-function actualizarAvatar(){
-  var contenedor=document.getElementById('btnUsuario');
-  var viejo=document.getElementById('avatarIcono');
-  if(viejo)viejo.parentNode.removeChild(viejo);
-  var nuevo=document.createElement('span');
-  if(estaAutenticado()){nuevo.className='avatar-iniciales';nuevo.textContent=iniciales(authUser);}
-  else{nuevo.className='avatar-icono';nuevo.textContent='\uD83D\uDC64';}
-  nuevo.id='avatarIcono';
-  contenedor.appendChild(nuevo);
-}
+  function getHeaders() {
+    var h = { 'Content-Type': 'application/json' };
+    if (authToken) h['Authorization'] = authToken;
+    return h;
+  }
 
-function cargarDatos(){
-  var pbUrl=getPbUrl();
-  if(!pbUrl){setEstado('desconectado','Configura la URL del NAS');datos=[];renderizar();setTimeout(abrirConfig,600);return}
-  if(!estaAutenticado()){setEstado('desconectado','Inicia sesion para continuar');datos=[];renderizar();setTimeout(abrirAuth,600);return}
-  setEstado('cargando','Cargando datos...');
-  fetch(pbUrl+'/api/collections/'+COLECCION+'/records?perPage=200',{headers:getHeaders()})
-    .then(function(res){
-      if(res.status===401){manejarNoAutorizado();throw new Error('_401')}
-      if(!res.ok)throw new Error('error_servidor');
+  function getPbUrl() {
+    return PB_URL_FIJA !== '__PB_URL__' ? PB_URL_FIJA : (localStorage.getItem(STORAGE_KEY) || '');
+  }
+
+  function getAvatarUrl(user) {
+    if (!user || !user.avatar) return null;
+    return getPbUrl() + '/api/files/users/' + user.id + '/' + user.avatar;
+  }
+
+  function guardarSesion(token, user) {
+    authToken = token; authUser = user;
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
+    localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+    actualizarAvatar();
+  }
+
+  function limpiarSesion() {
+    authToken = ''; authUser = null;
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+    localStorage.removeItem(AUTH_USER_KEY);
+    datos = []; conectado = false;
+    actualizarAvatar(); renderizar();
+  }
+
+  function manejarNoAutorizado() {
+    limpiarSesion();
+    setEstado('desconectado', 'Sesion caducada, vuelve a entrar');
+    setTimeout(abrirAuth, 400);
+  }
+
+  function iniciales(user) {
+    if (!user) return '';
+    var n = (user.name || '').trim();
+    if (n) {
+      var p = n.split(' ');
+      return p.length >= 2 ? (p[0][0] + p[1][0]).toUpperCase() : p[0].substring(0,2).toUpperCase();
+    }
+    return (user.email || '?')[0].toUpperCase();
+  }
+
+  function ponerAvatarEnContenedor(contenedor, user) {
+    while (contenedor.firstChild) { contenedor.removeChild(contenedor.firstChild); }
+    var avatarUrl = user ? getAvatarUrl(user) : null;
+    if (avatarUrl) {
+      var img = document.createElement('img');
+      img.src = avatarUrl;
+      img.alt = 'Avatar';
+      img.onerror = function() {
+        contenedor.removeChild(img);
+        var sp = document.createElement('span');
+        sp.className = 'perfil-avatar-txt';
+        sp.textContent = iniciales(user) || '?';
+        contenedor.appendChild(sp);
+      };
+      contenedor.appendChild(img);
+    } else if (user) {
+      var sp = document.createElement('span');
+      sp.className = 'avatar-iniciales';
+      sp.textContent = iniciales(user) || '?';
+      contenedor.appendChild(sp);
+    } else {
+      var sp = document.createElement('span');
+      sp.className = 'avatar-icono';
+      sp.textContent = '\uD83D\uDC64';
+      contenedor.appendChild(sp);
+    }
+  }
+
+  function actualizarAvatar() {
+    ponerAvatarEnContenedor(document.getElementById('btnUsuario'), estaAutenticado() ? authUser : null);
+  }
+
+  function actualizarPerfilModal() {
+    if (!authUser) return;
+    document.getElementById('perfilNombre').textContent = authUser.name || 'Usuario';
+    document.getElementById('perfilEmail').textContent = authUser.email || '';
+    var avatarEl = document.getElementById('perfilAvatar');
+    while (avatarEl.firstChild) { avatarEl.removeChild(avatarEl.firstChild); }
+    var avatarUrl = getAvatarUrl(authUser);
+    if (avatarUrl) {
+      var img = document.createElement('img');
+      img.src = avatarUrl;
+      img.alt = 'Avatar';
+      img.onerror = function() {
+        avatarEl.removeChild(img);
+        var sp = document.createElement('span');
+        sp.className = 'perfil-avatar-txt';
+        sp.textContent = iniciales(authUser) || '?';
+        avatarEl.appendChild(sp);
+      };
+      avatarEl.appendChild(img);
+    } else {
+      var sp = document.createElement('span');
+      sp.className = 'perfil-avatar-txt';
+      sp.textContent = iniciales(authUser) || '?';
+      avatarEl.appendChild(sp);
+    }
+  }
+
+  // ── SUBIR AVATAR ───────────────────────────────────────
+  function subirAvatar(file) {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) { mostrarToast('Solo se permiten imagenes'); return; }
+    if (file.size > 5 * 1024 * 1024) { mostrarToast('La imagen no puede superar 5MB'); return; }
+    mostrarToast('Subiendo foto...');
+    var formData = new FormData();
+    formData.append('avatar', file);
+    var headers = {};
+    if (authToken) headers['Authorization'] = authToken;
+    fetch(getPbUrl() + '/api/collections/users/records/' + authUser.id, {
+      method: 'PATCH', headers: headers, body: formData
+    })
+      .then(function(res) {
+        if (res.status === 401) { manejarNoAutorizado(); throw new Error('_401'); }
+        if (!res.ok) throw new Error('_error');
+        return res.json();
+      })
+      .then(function(userActualizado) {
+        authUser = userActualizado;
+        localStorage.setItem(AUTH_USER_KEY, JSON.stringify(authUser));
+        actualizarAvatar();
+        actualizarPerfilModal();
+        mostrarToast('Foto actualizada!');
+      })
+      .catch(function(err) {
+        if (err.message !== '_401') mostrarToast('Error al subir la foto');
+      });
+  }
+
+  // ── API ────────────────────────────────────────────────
+  function cargarDatos() {
+    var pbUrl = getPbUrl();
+    if (!pbUrl) {
+      setEstado('desconectado', 'Configura la URL del NAS');
+      datos = []; renderizar(); setTimeout(abrirConfig, 600); return;
+    }
+    if (!estaAutenticado()) {
+      setEstado('desconectado', 'Inicia sesion para continuar');
+      datos = []; renderizar(); setTimeout(abrirAuth, 600); return;
+    }
+    setEstado('cargando', 'Cargando datos...');
+    fetch(pbUrl + '/api/collections/' + COLECCION + '/records?perPage=200', { headers: getHeaders() })
+      .then(function(res) {
+        if (res.status === 401) { manejarNoAutorizado(); throw new Error('_401'); }
+        if (!res.ok) throw new Error('_error');
+        return res.json();
+      })
+      .then(function(json) {
+        var todos = json.items || [];
+        datos = todos.filter(function(item) {
+          var f = item.fecha || item.created || '';
+          return f.indexOf(String(anyoActivo)) >= 0;
+        });
+        conectado = true;
+        setEstado('conectado', 'Conectado \u00b7 ' + datos.length + ' registro' + (datos.length !== 1 ? 's' : ''));
+        renderizar();
+        comprobarNotificaciones();
+      })
+      .catch(function(err) {
+        if (err.message === '_401') return;
+        conectado = false;
+        setEstado('desconectado', 'Sin conexion con el NAS');
+        datos = []; renderizar();
+      });
+  }
+
+  function crearRegistro(fecha, nota) {
+    return fetch(getPbUrl() + '/api/collections/' + COLECCION + '/records', {
+      method: 'POST', headers: getHeaders(),
+      body: JSON.stringify({ fecha: fecha + ' 00:00:00.000Z', nota: nota, user: authUser.id })
+    }).then(function(res) {
+      if (res.status === 401) { manejarNoAutorizado(); throw new Error('_401'); }
+      if (!res.ok) throw new Error('_error');
       return res.json();
-    })
-    .then(function(json){
-      var todos=json.items||[];
-      datos=todos.filter(function(item){var f=item.fecha||item.created||'';return f.indexOf(String(anyoActivo))>=0});
-      conectado=true;
-      setEstado('conectado','Conectado \u00b7 '+datos.length+' registro'+(datos.length!==1?'s':''));
-      renderizar();comprobarNotificaciones();
-    })
-    .catch(function(err){
-      if(err.message==='_401')return;
-      conectado=false;setEstado('desconectado','Sin conexion con el NAS');datos=[];renderizar();
     });
-}
-
-function crearRegistro(fecha,nota){
-  return fetch(getPbUrl()+'/api/collections/'+COLECCION+'/records',{
-    method:'POST',headers:getHeaders(),
-    body:JSON.stringify({fecha:fecha+' 00:00:00.000Z',nota:nota,user:authUser.id})
-  }).then(function(res){
-    if(res.status===401){manejarNoAutorizado();throw new Error('_401')}
-    if(!res.ok)throw new Error('error_servidor');
-    return res.json();
-  });
-}
-
-function editarRegistro(id,fecha,nota){
-  return fetch(getPbUrl()+'/api/collections/'+COLECCION+'/records/'+id,{
-    method:'PATCH',headers:getHeaders(),
-    body:JSON.stringify({fecha:fecha+' 00:00:00.000Z',nota:nota})
-  }).then(function(res){
-    if(res.status===401){manejarNoAutorizado();throw new Error('_401')}
-    if(!res.ok)throw new Error('error_servidor');
-    return res.json();
-  });
-}
-
-function borrarRegistro(id){
-  return fetch(getPbUrl()+'/api/collections/'+COLECCION+'/records/'+id,{
-    method:'DELETE',headers:getHeaders()
-  }).then(function(res){
-    if(res.status===401){manejarNoAutorizado();throw new Error('_401')}
-    if(!res.ok)throw new Error('error_servidor');
-  });
-}
-
-function loginApi(email,password){
-  return fetch(getPbUrl()+'/api/collections/users/auth-with-password',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({identity:email,password:password})
-  }).then(function(res){
-    return res.json().then(function(data){if(!res.ok)throw new Error(data.message||'Credenciales incorrectas');return data});
-  }).then(function(data){guardarSesion(data.token,data.record)});
-}
-
-function registroApi(nombre,email,password){
-  return fetch(getPbUrl()+'/api/collections/users/records',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({name:nombre,email:email,password:password,passwordConfirm:password})
-  }).then(function(res){
-    return res.json().then(function(data){if(!res.ok)throw new Error(data.message||'Error al registrar');return data});
-  }).then(function(){return loginApi(email,password)});
-}
-
-// setEstado sin innerHTML
-function setEstado(tipo,texto){
-  var el=document.getElementById('estadoConexion');
-  el.className='estado-conexion '+tipo;
-  document.getElementById('estadoTexto').textContent=texto;
-}
-
-// RENDERIZAR sin innerHTML para datos del servidor
-function renderizar(){
-  var usados=datos.length;
-  document.getElementById('usados').textContent=usados;
-  document.getElementById('contadorTotal').textContent='/'+TOTAL;
-  document.getElementById('anyoLabel').textContent=anyoActivo;
-  document.getElementById('anyoNav').textContent=anyoActivo;
-  document.getElementById('progreso').style.width=Math.min(100,(usados/TOTAL)*100)+'%';
-  document.getElementById('alertaAgotado').classList.toggle('visible',usados>=TOTAL);
-  var lista=document.getElementById('lista');
-  lista.innerHTML='';
-  if(datos.length===0){
-    document.getElementById('vacio').style.display='block';
-    document.getElementById('listaTitulo').style.display='none';
-    return;
   }
-  document.getElementById('vacio').style.display='none';
-  document.getElementById('listaTitulo').style.display='block';
-  var ordenados=datos.slice().sort(function(a,b){
-    return(b.fecha||b.created||'').substring(0,10).localeCompare((a.fecha||a.created||'').substring(0,10));
+
+  function editarRegistro(id, fecha, nota) {
+    return fetch(getPbUrl() + '/api/collections/' + COLECCION + '/records/' + id, {
+      method: 'PATCH', headers: getHeaders(),
+      body: JSON.stringify({ fecha: fecha + ' 00:00:00.000Z', nota: nota })
+    }).then(function(res) {
+      if (res.status === 401) { manejarNoAutorizado(); throw new Error('_401'); }
+      if (!res.ok) throw new Error('_error');
+      return res.json();
+    });
+  }
+
+  function borrarRegistro(id) {
+    return fetch(getPbUrl() + '/api/collections/' + COLECCION + '/records/' + id, {
+      method: 'DELETE', headers: getHeaders()
+    }).then(function(res) {
+      if (res.status === 401) { manejarNoAutorizado(); throw new Error('_401'); }
+      if (!res.ok) throw new Error('_error');
+    });
+  }
+
+  function loginApi(email, password) {
+    return fetch(getPbUrl() + '/api/collections/users/auth-with-password', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ identity: email, password: password })
+    }).then(function(res) {
+      return res.json().then(function(data) {
+        if (!res.ok) throw new Error(data.message || 'Credenciales incorrectas');
+        return data;
+      });
+    }).then(function(data) { guardarSesion(data.token, data.record); });
+  }
+
+  function registroApi(nombre, email, password) {
+    return fetch(getPbUrl() + '/api/collections/users/records', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: nombre, email: email, password: password, passwordConfirm: password })
+    }).then(function(res) {
+      return res.json().then(function(data) {
+        if (!res.ok) throw new Error(data.message || 'Error al registrar');
+        return data;
+      });
+    }).then(function() { return loginApi(email, password); });
+  }
+
+  function setEstado(tipo, texto) {
+    var el = document.getElementById('estadoConexion');
+    el.className = 'estado-conexion ' + tipo;
+    document.getElementById('estadoTexto').textContent = texto;
+  }
+
+  function renderizar() {
+    var usados = datos.length;
+    document.getElementById('usados').textContent = usados;
+    document.getElementById('contadorTotal').textContent = '/' + TOTAL;
+    document.getElementById('anyoLabel').textContent = anyoActivo;
+    document.getElementById('anyoNav').textContent = anyoActivo;
+    document.getElementById('progreso').style.width = Math.min(100, (usados / TOTAL) * 100) + '%';
+    document.getElementById('alertaAgotado').classList.toggle('visible', usados >= TOTAL);
+    var lista = document.getElementById('lista');
+    lista.innerHTML = '';
+    if (datos.length === 0) {
+      document.getElementById('vacio').style.display = 'block';
+      document.getElementById('listaTitulo').style.display = 'none';
+      return;
+    }
+    document.getElementById('vacio').style.display = 'none';
+    document.getElementById('listaTitulo').style.display = 'block';
+    var ordenados = datos.slice().sort(function(a, b) {
+      return (b.fecha || b.created || '').substring(0,10).localeCompare((a.fecha || a.created || '').substring(0,10));
+    });
+    ordenados.forEach(function(item) {
+      var fechaRaw = (item.fecha && item.fecha.length > 4) ? item.fecha : (item.created || '');
+      var fechaStr = fechaRaw.substring(0,10);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(fechaStr)) return;
+      var fecha = new Date(fechaStr + 'T12:00:00');
+      if (isNaN(fecha.getTime())) return;
+      var itemEl = document.createElement('div');
+      itemEl.className = 'item';
+      var fechaBox = document.createElement('div');
+      fechaBox.className = 'item-fecha-box';
+      var diaEl = document.createElement('div');
+      diaEl.className = 'item-dia';
+      diaEl.textContent = fecha.getDate();
+      var mesEl = document.createElement('div');
+      mesEl.className = 'item-mes';
+      mesEl.textContent = MESES[fecha.getMonth()];
+      fechaBox.appendChild(diaEl);
+      fechaBox.appendChild(mesEl);
+      var bodyEl = document.createElement('div');
+      bodyEl.className = 'item-body';
+      var weekdayEl = document.createElement('div');
+      weekdayEl.className = 'item-weekday';
+      weekdayEl.textContent = DIAS[fecha.getDay()] + ' \u00b7 ' + fecha.getFullYear();
+      var notaEl = document.createElement('div');
+      notaEl.className = 'item-nota' + (item.nota ? '' : ' vacia');
+      notaEl.textContent = item.nota || 'Sin motivo';
+      bodyEl.appendChild(weekdayEl);
+      bodyEl.appendChild(notaEl);
+      var accionesEl = document.createElement('div');
+      accionesEl.className = 'item-acciones';
+      var btnEditar = document.createElement('button');
+      btnEditar.className = 'btn-editar';
+      btnEditar.title = 'Editar';
+      btnEditar.textContent = '\u270E';
+      btnEditar.setAttribute('data-id', item.id);
+      btnEditar.addEventListener('click', function() { abrirEditar(this.getAttribute('data-id')); });
+      var btnBorrar = document.createElement('button');
+      btnBorrar.className = 'btn-borrar';
+      btnBorrar.textContent = '\u00D7';
+      btnBorrar.setAttribute('data-id', item.id);
+      btnBorrar.addEventListener('click', function() { borrar(this.getAttribute('data-id')); });
+      accionesEl.appendChild(btnEditar);
+      accionesEl.appendChild(btnBorrar);
+      itemEl.appendChild(fechaBox);
+      itemEl.appendChild(bodyEl);
+      itemEl.appendChild(accionesEl);
+      lista.appendChild(itemEl);
+    });
+  }
+
+  function comprobarNotificaciones() {
+    var usados = datos.length;
+    var restantes = TOTAL - usados;
+    var hoy = new Date();
+    var mes = hoy.getMonth();
+    var trimestre = Math.floor(mes / 3);
+    var claveTrim = 'notif_trim_' + anyoActivo + '_' + trimestre;
+    if (anyoActivo !== hoy.getFullYear()) return;
+    document.getElementById('notifUltimoDia').classList.toggle('visible', restantes === 1);
+    document.getElementById('notifMitad').classList.toggle('visible', usados === Math.floor(TOTAL / 2) && restantes > 0);
+    document.getElementById('notifDiciembre').classList.toggle('visible', mes === 11 && restantes > 0);
+    var yaVisto = localStorage.getItem(claveTrim);
+    if (!yaVisto && usados > 0) {
+      var txt = document.getElementById('notifTrimestralTxt');
+      txt.innerHTML = '';
+      var titulo = document.createElement('div');
+      titulo.className = 'notif-banner-titulo';
+      titulo.textContent = 'Resumen trimestral';
+      var linea = document.createTextNode('Llevas ' + usados + ' dia' + (usados !== 1 ? 's' : '') + ' usado' + (usados !== 1 ? 's' : '') + ' y te quedan ' + restantes + ' de ' + TOTAL + '.');
+      txt.appendChild(titulo);
+      txt.appendChild(linea);
+      document.getElementById('notifTrimestral').classList.add('visible');
+      localStorage.setItem(claveTrim, '1');
+    }
+    if (!('Notification' in window) || Notification.permission === 'denied') return;
+    var mensaje = null;
+    if (restantes === 1) mensaje = 'Solo te queda 1 dia de asunto propio. Usalo antes de fin de ano.';
+    else if (usados === Math.floor(TOTAL / 2)) mensaje = 'Llevas la mitad de tus dias de asunto propio usados.';
+    else if (mes === 11 && restantes > 0) mensaje = 'Estamos en diciembre y te quedan ' + restantes + ' dias sin usar.';
+    if (!mensaje) return;
+    if (Notification.permission === 'granted') {
+      new Notification('Asuntos Propios', { body: mensaje });
+    } else {
+      Notification.requestPermission().then(function(p) {
+        if (p === 'granted') new Notification('Asuntos Propios', { body: mensaje });
+      });
+    }
+  }
+
+  function abrirModal() {
+    if (!estaAutenticado()) { mostrarToast('Inicia sesion primero'); abrirAuth(); return; }
+    if (!conectado) { mostrarToast('Sin conexion con el NAS'); return; }
+    if (datos.length >= TOTAL) { mostrarToast('Ya has usado todos los dias disponibles'); return; }
+    editandoId = null;
+    document.getElementById('modalTitulo').textContent = 'Nuevo dia';
+    document.getElementById('btnGuardar').textContent = 'Guardar';
+    var hoy = new Date();
+    document.getElementById('inputFecha').value = hoy.getFullYear() + '-' + String(hoy.getMonth()+1).padStart(2,'0') + '-' + String(hoy.getDate()).padStart(2,'0');
+    document.getElementById('inputNota').value = '';
+    document.getElementById('overlay').classList.add('visible');
+    setTimeout(function() { document.getElementById('inputNota').focus(); }, 350);
+  }
+
+  function abrirEditar(id) {
+    if (!estaAutenticado()) { mostrarToast('Inicia sesion primero'); return; }
+    if (!conectado) { mostrarToast('Sin conexion con el NAS'); return; }
+    var item = null;
+    for (var i = 0; i < datos.length; i++) {
+      if (datos[i].id === id) { item = datos[i]; break; }
+    }
+    if (!item) return;
+    editandoId = id;
+    document.getElementById('modalTitulo').textContent = 'Editar dia';
+    document.getElementById('btnGuardar').textContent = 'Guardar cambios';
+    var fechaRaw = (item.fecha && item.fecha.length > 4) ? item.fecha : (item.created || '');
+    document.getElementById('inputFecha').value = fechaRaw.substring(0, 10);
+    document.getElementById('inputNota').value = item.nota || '';
+    document.getElementById('overlay').classList.add('visible');
+    setTimeout(function() { document.getElementById('inputNota').focus(); }, 350);
+  }
+
+  function cerrarModal() { document.getElementById('overlay').classList.remove('visible'); editandoId = null; }
+
+  function guardar() {
+    var fecha = document.getElementById('inputFecha').value;
+    var nota = document.getElementById('inputNota').value.trim();
+    if (!fecha) { mostrarToast('Elige una fecha primero'); return; }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha)) { mostrarToast('Fecha no valida'); return; }
+    var fechaObj = new Date(fecha + 'T12:00:00');
+    if (isNaN(fechaObj.getTime())) { mostrarToast('Fecha no valida'); return; }
+    if (fechaObj.getFullYear() !== anyoActivo) { mostrarToast('La fecha debe ser del ano ' + anyoActivo); return; }
+    if (!editandoId) {
+      var dup = datos.some(function(d) { return (d.fecha || d.created || '').substring(0,10) === fecha; });
+      if (dup) { mostrarToast('Ya tienes ese dia registrado'); return; }
+    }
+    var btn = document.getElementById('btnGuardar');
+    var esEdicion = !!editandoId;
+    btn.disabled = true; btn.textContent = 'Guardando...';
+    var op = esEdicion ? editarRegistro(editandoId, fecha, nota) : crearRegistro(fecha, nota);
+    op.then(function() { cerrarModal(); cargarDatos(); mostrarToast(esEdicion ? 'Registro actualizado!' : 'Dia registrado!'); })
+      .catch(function(err) { if (err.message !== '_401') mostrarToast('Error al guardar. Revisa la conexion.'); })
+      .finally(function() { btn.disabled = false; btn.textContent = esEdicion ? 'Guardar cambios' : 'Guardar'; });
+  }
+
+  function borrar(id) {
+    if (!confirm('Borrar este registro?')) return;
+    borrarRegistro(id)
+      .then(function() { cargarDatos(); mostrarToast('Registro eliminado'); })
+      .catch(function(err) { if (err.message !== '_401') mostrarToast('Error al borrar'); });
+  }
+
+  function abrirConfig() {
+    document.getElementById('campoUrl').style.display = PB_URL_FIJA !== '__PB_URL__' ? 'none' : 'block';
+    document.getElementById('inputUrl').value = getPbUrl();
+    document.getElementById('inputTotal').value = TOTAL;
+    document.getElementById('overlayConfig').classList.add('visible');
+    setTimeout(function() { document.getElementById('inputTotal').focus(); }, 350);
+  }
+  function cerrarConfig() { document.getElementById('overlayConfig').classList.remove('visible'); }
+
+  function guardarConfig() {
+    var url = document.getElementById('inputUrl').value.trim();
+    var totalInput = parseInt(document.getElementById('inputTotal').value.trim(), 10);
+    if (!url && PB_URL_FIJA === '__PB_URL__') { mostrarToast('Introduce la URL del NAS'); return; }
+    if (url) {
+      if (url.charAt(url.length-1) === '/') url = url.slice(0,-1);
+      localStorage.setItem(STORAGE_KEY, url);
+    }
+    if (!isNaN(totalInput) && totalInput > 0) { TOTAL = totalInput; localStorage.setItem(TOTAL_KEY, TOTAL); }
+    cerrarConfig(); mostrarToast('Configuracion guardada'); cargarDatos();
+  }
+
+  function abrirAuth() {
+    if (estaAutenticado()) {
+      actualizarPerfilModal();
+      document.getElementById('vistaLogin').style.display = 'none';
+      document.getElementById('vistaPerfil').style.display = 'block';
+    } else {
+      document.getElementById('vistaLogin').style.display = 'block';
+      document.getElementById('vistaPerfil').style.display = 'none';
+      mostrarTab('login'); limpiarErrorAuth();
+    }
+    document.getElementById('overlayAuth').classList.add('visible');
+  }
+  function cerrarAuth() { document.getElementById('overlayAuth').classList.remove('visible'); }
+
+  function mostrarTab(tab) {
+    var esLogin = tab === 'login';
+    document.getElementById('formLogin').style.display = esLogin ? 'block' : 'none';
+    document.getElementById('formRegistro').style.display = esLogin ? 'none' : 'block';
+    document.getElementById('tabLogin').className = 'tab-btn' + (esLogin ? ' activo' : '');
+    document.getElementById('tabRegistro').className = 'tab-btn' + (!esLogin ? ' activo' : '');
+    limpiarErrorAuth();
+  }
+  function mostrarErrorAuth(msg) { var e = document.getElementById('errorAuth'); e.textContent = msg; e.classList.add('visible'); }
+  function limpiarErrorAuth() { document.getElementById('errorAuth').classList.remove('visible'); }
+
+  function hacerLogin() {
+    var pbUrl = getPbUrl();
+    if (!pbUrl) { cerrarAuth(); mostrarToast('Configura primero la URL del NAS'); setTimeout(abrirConfig, 400); return; }
+    var email = document.getElementById('inputEmail').value.trim();
+    var pass = document.getElementById('inputPassword').value;
+    if (!email || !pass) { mostrarErrorAuth('Rellena todos los campos'); return; }
+    limpiarErrorAuth();
+    var btn = document.getElementById('btnLogin');
+    btn.disabled = true; btn.textContent = 'Entrando...';
+    loginApi(email, pass)
+      .then(function() { cerrarAuth(); mostrarToast('Bienvenido, ' + (authUser.name || authUser.email) + '!'); cargarDatos(); })
+      .catch(function(err) { mostrarErrorAuth(err.message || 'Error al iniciar sesion'); })
+      .finally(function() { btn.disabled = false; btn.textContent = 'Entrar'; });
+  }
+
+  function hacerRegistro() {
+    var pbUrl = getPbUrl();
+    if (!pbUrl) { cerrarAuth(); mostrarToast('Configura primero la URL del NAS'); setTimeout(abrirConfig, 400); return; }
+    var nombre = document.getElementById('inputNombreReg').value.trim();
+    var email = document.getElementById('inputEmailReg').value.trim();
+    var pass = document.getElementById('inputPasswordReg').value;
+    if (!nombre || !email || !pass) { mostrarErrorAuth('Rellena todos los campos'); return; }
+    if (pass.length < 8) { mostrarErrorAuth('La contrasena debe tener al menos 8 caracteres'); return; }
+    limpiarErrorAuth();
+    var btn = document.getElementById('btnRegistro');
+    btn.disabled = true; btn.textContent = 'Creando cuenta...';
+    registroApi(nombre, email, pass)
+      .then(function() { cerrarAuth(); mostrarToast('Bienvenido, ' + nombre + '!'); cargarDatos(); })
+      .catch(function(err) { mostrarErrorAuth(err.message || 'Error al registrar'); })
+      .finally(function() { btn.disabled = false; btn.textContent = 'Crear cuenta'; });
+  }
+
+  function cerrarSesion() {
+    if (!confirm('Cerrar sesion?')) return;
+    cerrarAuth(); limpiarSesion();
+    setEstado('desconectado', 'Sesion cerrada'); mostrarToast('Sesion cerrada');
+  }
+
+  function cambiarAnyo(delta) { anyoActivo += delta; datos = []; renderizar(); cargarDatos(); }
+
+  function mostrarToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 2500);
+  }
+
+  document.getElementById('btnConfig').addEventListener('click', abrirConfig);
+  document.getElementById('btnUsuario').addEventListener('click', abrirAuth);
+  document.getElementById('btnAnyadir').addEventListener('click', abrirModal);
+  document.getElementById('btnGuardar').addEventListener('click', guardar);
+  document.getElementById('btnGuardarConfig').addEventListener('click', guardarConfig);
+  document.getElementById('btnAnyoMenos').addEventListener('click', function() { cambiarAnyo(-1); });
+  document.getElementById('btnAnyoMas').addEventListener('click', function() { cambiarAnyo(1); });
+  document.getElementById('tabLogin').addEventListener('click', function() { mostrarTab('login'); });
+  document.getElementById('tabRegistro').addEventListener('click', function() { mostrarTab('registro'); });
+  document.getElementById('btnLogin').addEventListener('click', hacerLogin);
+  document.getElementById('btnRegistro').addEventListener('click', hacerRegistro);
+  document.getElementById('btnCerrarSesion').addEventListener('click', cerrarSesion);
+  document.getElementById('btnCerrarPerfil').addEventListener('click', cerrarAuth);
+  document.getElementById('overlay').addEventListener('click', function(e) { if (e.target === this) cerrarModal(); });
+  document.getElementById('overlayConfig').addEventListener('click', function(e) { if (e.target === this) cerrarConfig(); });
+  document.getElementById('overlayAuth').addEventListener('click', function(e) { if (e.target === this) cerrarAuth(); });
+  document.getElementById('inputPassword').addEventListener('keydown', function(e) { if (e.key === 'Enter') hacerLogin(); });
+  document.getElementById('inputPasswordReg').addEventListener('keydown', function(e) { if (e.key === 'Enter') hacerRegistro(); });
+  document.getElementById('perfilAvatarWrap').addEventListener('click', function() {
+    document.getElementById('inputAvatar').click();
   });
-  ordenados.forEach(function(item){
-    var fechaRaw=(item.fecha&&item.fecha.length>4)?item.fecha:(item.created||'');
-    var fechaStr=fechaRaw.substring(0,10);
-    if(!/^\d{4}-\d{2}-\d{2}$/.test(fechaStr))return;
-    var fecha=new Date(fechaStr+'T12:00:00');
-    if(isNaN(fecha.getTime()))return;
-
-    var elItem=document.createElement('div');elItem.className='item';
-
-    var fechaBox=document.createElement('div');fechaBox.className='item-fecha-box';
-    var diaEl=document.createElement('div');diaEl.className='item-dia';diaEl.textContent=fecha.getDate();
-    var mesEl=document.createElement('div');mesEl.className='item-mes';mesEl.textContent=MESES[fecha.getMonth()];
-    fechaBox.appendChild(diaEl);fechaBox.appendChild(mesEl);
-
-    var body=document.createElement('div');body.className='item-body';
-    var weekday=document.createElement('div');weekday.className='item-weekday';
-    weekday.textContent=DIAS[fecha.getDay()]+' \u00b7 '+fecha.getFullYear();
-    var notaEl=document.createElement('div');
-    notaEl.className='item-nota'+(item.nota?'':' vacia');
-    notaEl.textContent=item.nota||'Sin motivo';
-    body.appendChild(weekday);body.appendChild(notaEl);
-
-    var acciones=document.createElement('div');acciones.className='item-acciones';
-    var btnE=document.createElement('button');btnE.className='btn-editar';btnE.title='Editar';
-    btnE.textContent='\u270E';btnE.setAttribute('data-id',item.id);
-    btnE.addEventListener('click',function(){abrirEditar(this.getAttribute('data-id'))});
-    var btnB=document.createElement('button');btnB.className='btn-borrar';
-    btnB.textContent='\u00d7';btnB.setAttribute('data-id',item.id);
-    btnB.addEventListener('click',function(){borrar(this.getAttribute('data-id'))});
-    acciones.appendChild(btnE);acciones.appendChild(btnB);
-
-    elItem.appendChild(fechaBox);elItem.appendChild(body);elItem.appendChild(acciones);
-    lista.appendChild(elItem);
+  document.getElementById('inputAvatar').addEventListener('change', function() {
+    if (this.files && this.files[0]) { subirAvatar(this.files[0]); this.value = ''; }
   });
-}
 
-// NOTIFICACIONES - banner trimestral sin innerHTML
-function comprobarNotificaciones(){
-  var usados=datos.length,restantes=TOTAL-usados;
-  var hoy=new Date(),mes=hoy.getMonth();
-  var trimestre=Math.floor(mes/3);
-  var claveTrim='notif_trim_'+anyoActivo+'_'+trimestre;
-  if(anyoActivo!==hoy.getFullYear())return;
-  document.getElementById('notifUltimoDia').classList.toggle('visible',restantes===1);
-  document.getElementById('notifMitad').classList.toggle('visible',usados===Math.floor(TOTAL/2)&&restantes>0);
-  document.getElementById('notifDiciembre').classList.toggle('visible',mes===11&&restantes>0);
-  var yaVisto=localStorage.getItem(claveTrim);
-  if(!yaVisto&&usados>0){
-    var contenedor=document.getElementById('notifTrimestralTxt');
-    contenedor.innerHTML='';
-    var tit=document.createElement('div');tit.className='notif-banner-titulo';tit.textContent='Resumen trimestral';
-    var linea=document.createTextNode('Llevas '+usados+' dia'+(usados!==1?'s':'')+' usado'+(usados!==1?'s':'')+' y te quedan '+restantes+' de '+TOTAL+'.');
-    contenedor.appendChild(tit);contenedor.appendChild(linea);
-    document.getElementById('notifTrimestral').classList.add('visible');
-    localStorage.setItem(claveTrim,'1');
-  }
-  if(!('Notification'in window)||Notification.permission==='denied')return;
-  var mensaje=null;
-  if(restantes===1)mensaje='Solo te queda 1 dia de asunto propio. Usalo antes de fin de ano.';
-  else if(usados===Math.floor(TOTAL/2))mensaje='Llevas la mitad de tus dias de asunto propio usados.';
-  else if(mes===11&&restantes>0)mensaje='Estamos en diciembre y te quedan '+restantes+' dias sin usar.';
-  if(!mensaje)return;
-  if(Notification.permission==='granted'){new Notification('Asuntos Propios',{body:mensaje})}
-  else{Notification.requestPermission().then(function(p){if(p==='granted')new Notification('Asuntos Propios',{body:mensaje})})}
-}
-
-function abrirModal(){
-  if(!estaAutenticado()){mostrarToast('Inicia sesion primero');abrirAuth();return}
-  if(!conectado){mostrarToast('Sin conexion con el NAS');return}
-  if(datos.length>=TOTAL){mostrarToast('Ya has usado todos los dias disponibles');return}
-  editandoId=null;
-  document.getElementById('modalTitulo').textContent='Nuevo dia';
-  document.getElementById('btnGuardar').textContent='Guardar';
-  var hoy=new Date();
-  document.getElementById('inputFecha').value=hoy.getFullYear()+'-'+String(hoy.getMonth()+1).padStart(2,'0')+'-'+String(hoy.getDate()).padStart(2,'0');
-  document.getElementById('inputNota').value='';
-  document.getElementById('overlay').classList.add('visible');
-  setTimeout(function(){document.getElementById('inputNota').focus()},350);
-}
-
-function abrirEditar(id){
-  if(!estaAutenticado()){mostrarToast('Inicia sesion primero');return}
-  if(!conectado){mostrarToast('Sin conexion con el NAS');return}
-  var item=null;
-  for(var i=0;i<datos.length;i++){if(datos[i].id===id){item=datos[i];break}}
-  if(!item)return;
-  editandoId=id;
-  document.getElementById('modalTitulo').textContent='Editar dia';
-  document.getElementById('btnGuardar').textContent='Guardar cambios';
-  var fechaRaw=(item.fecha&&item.fecha.length>4)?item.fecha:(item.created||'');
-  document.getElementById('inputFecha').value=fechaRaw.substring(0,10);
-  document.getElementById('inputNota').value=item.nota||'';
-  document.getElementById('overlay').classList.add('visible');
-  setTimeout(function(){document.getElementById('inputNota').focus()},350);
-}
-
-function cerrarModal(){document.getElementById('overlay').classList.remove('visible');editandoId=null}
-
-// GUARDAR con validacion de fecha duplicada
-function guardar(){
-  var fecha=document.getElementById('inputFecha').value;
-  var nota=document.getElementById('inputNota').value.trim();
-  if(!fecha){mostrarToast('Elige una fecha primero');return}
-  if(!/^\d{4}-\d{2}-\d{2}$/.test(fecha)||isNaN(new Date(fecha+'T12:00:00').getTime())){mostrarToast('Fecha no valida');return}
-  if(parseInt(fecha.split('-')[0])!==anyoActivo){mostrarToast('La fecha debe ser del ano '+anyoActivo);return}
-  if(!editandoId){
-    var yaExiste=datos.some(function(d){return(d.fecha||d.created||'').substring(0,10)===fecha});
-    if(yaExiste){mostrarToast('Ya tienes ese dia registrado');return}
-  }
-  var btn=document.getElementById('btnGuardar'),esEdicion=!!editandoId;
-  btn.disabled=true;btn.textContent='Guardando...';
-  var op=esEdicion?editarRegistro(editandoId,fecha,nota):crearRegistro(fecha,nota);
-  op.then(function(){cerrarModal();cargarDatos();mostrarToast(esEdicion?'Registro actualizado!':'Dia registrado!')})
-    .catch(function(err){if(err.message!=='_401')mostrarToast('Error al guardar. Revisa la conexion.')})
-    .finally(function(){btn.disabled=false;btn.textContent=esEdicion?'Guardar cambios':'Guardar'});
-}
-
-function borrar(id){
-  if(!confirm('Borrar este registro?'))return;
-  borrarRegistro(id)
-    .then(function(){cargarDatos();mostrarToast('Registro eliminado')})
-    .catch(function(err){if(err.message!=='_401')mostrarToast('Error al borrar')});
-}
-
-function abrirConfig(){
-  var urlFija=PB_URL_FIJA!=='__PB_URL__';
-  document.getElementById('campoUrl').style.display=urlFija?'none':'block';
-  document.getElementById('inputUrl').value=getPbUrl();
-  document.getElementById('inputTotal').value=TOTAL;
-  document.getElementById('overlayConfig').classList.add('visible');
-  setTimeout(function(){document.getElementById('inputTotal').focus()},350);
-}
-function cerrarConfig(){document.getElementById('overlayConfig').classList.remove('visible')}
-function guardarConfig(){
-  var url=document.getElementById('inputUrl').value.trim();
-  var totalInput=parseInt(document.getElementById('inputTotal').value.trim(),10);
-  if(!url&&PB_URL_FIJA==='__PB_URL__'){mostrarToast('Introduce la URL del NAS');return}
-  if(url){if(url.charAt(url.length-1)==='/')url=url.slice(0,-1);localStorage.setItem(STORAGE_KEY,url)}
-  if(!isNaN(totalInput)&&totalInput>0){TOTAL=totalInput;localStorage.setItem(TOTAL_KEY,TOTAL)}
-  cerrarConfig();mostrarToast('Configuracion guardada');cargarDatos();
-}
-
-function abrirAuth(){
-  if(estaAutenticado()){
-    document.getElementById('perfilAvatarTxt').textContent=iniciales(authUser)||'?';
-    document.getElementById('perfilNombre').textContent=authUser.name||'Usuario';
-    document.getElementById('perfilEmail').textContent=authUser.email||'';
-    document.getElementById('vistaLogin').style.display='none';
-    document.getElementById('vistaPerfil').style.display='block';
-  }else{
-    document.getElementById('vistaLogin').style.display='block';
-    document.getElementById('vistaPerfil').style.display='none';
-    mostrarTab('login');limpiarErrorAuth();
-  }
-  document.getElementById('overlayAuth').classList.add('visible');
-}
-function cerrarAuth(){document.getElementById('overlayAuth').classList.remove('visible')}
-function mostrarTab(tab){
-  var esLogin=tab==='login';
-  document.getElementById('formLogin').style.display=esLogin?'block':'none';
-  document.getElementById('formRegistro').style.display=esLogin?'none':'block';
-  document.getElementById('tabLogin').className='tab-btn'+(esLogin?' activo':'');
-  document.getElementById('tabRegistro').className='tab-btn'+(!esLogin?' activo':'');
-  limpiarErrorAuth();
-}
-function mostrarErrorAuth(msg){var e=document.getElementById('errorAuth');e.textContent=msg;e.classList.add('visible')}
-function limpiarErrorAuth(){document.getElementById('errorAuth').classList.remove('visible')}
-
-function hacerLogin(){
-  var pbUrl=getPbUrl();
-  if(!pbUrl){cerrarAuth();mostrarToast('Configura primero la URL del NAS');setTimeout(abrirConfig,400);return}
-  var email=document.getElementById('inputEmail').value.trim();
-  var pass=document.getElementById('inputPassword').value;
-  if(!email||!pass){mostrarErrorAuth('Rellena todos los campos');return}
-  limpiarErrorAuth();
-  var btn=document.getElementById('btnLogin');btn.disabled=true;btn.textContent='Entrando...';
-  loginApi(email,pass)
-    .then(function(){cerrarAuth();mostrarToast('Bienvenido, '+(authUser.name||authUser.email)+'!');cargarDatos()})
-    .catch(function(err){mostrarErrorAuth(err.message||'Error al iniciar sesion')})
-    .finally(function(){btn.disabled=false;btn.textContent='Entrar'});
-}
-
-function hacerRegistro(){
-  var pbUrl=getPbUrl();
-  if(!pbUrl){cerrarAuth();mostrarToast('Configura primero la URL del NAS');setTimeout(abrirConfig,400);return}
-  var nombre=document.getElementById('inputNombreReg').value.trim();
-  var email=document.getElementById('inputEmailReg').value.trim();
-  var pass=document.getElementById('inputPasswordReg').value;
-  if(!nombre||!email||!pass){mostrarErrorAuth('Rellena todos los campos');return}
-  if(pass.length<8){mostrarErrorAuth('La contrasena debe tener al menos 8 caracteres');return}
-  limpiarErrorAuth();
-  var btn=document.getElementById('btnRegistro');btn.disabled=true;btn.textContent='Creando cuenta...';
-  registroApi(nombre,email,pass)
-    .then(function(){cerrarAuth();mostrarToast('Bienvenido, '+nombre+'!');cargarDatos()})
-    .catch(function(err){mostrarErrorAuth(err.message||'Error al registrar')})
-    .finally(function(){btn.disabled=false;btn.textContent='Crear cuenta'});
-}
-
-function cerrarSesion(){
-  if(!confirm('Cerrar sesion?'))return;
-  cerrarAuth();limpiarSesion();setEstado('desconectado','Sesion cerrada');mostrarToast('Sesion cerrada');
-}
-function cambiarAnyo(delta){anyoActivo+=delta;datos=[];renderizar();cargarDatos()}
-function mostrarToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2500)}
-
-document.getElementById('btnConfig').addEventListener('click',abrirConfig);
-document.getElementById('btnUsuario').addEventListener('click',abrirAuth);
-document.getElementById('btnAnyadir').addEventListener('click',abrirModal);
-document.getElementById('btnGuardar').addEventListener('click',guardar);
-document.getElementById('btnGuardarConfig').addEventListener('click',guardarConfig);
-document.getElementById('btnAnyoMenos').addEventListener('click',function(){cambiarAnyo(-1)});
-document.getElementById('btnAnyoMas').addEventListener('click',function(){cambiarAnyo(1)});
-document.getElementById('tabLogin').addEventListener('click',function(){mostrarTab('login')});
-document.getElementById('tabRegistro').addEventListener('click',function(){mostrarTab('registro')});
-document.getElementById('btnLogin').addEventListener('click',hacerLogin);
-document.getElementById('btnRegistro').addEventListener('click',hacerRegistro);
-document.getElementById('btnCerrarSesion').addEventListener('click',cerrarSesion);
-document.getElementById('btnCerrarPerfil').addEventListener('click',cerrarAuth);
-document.getElementById('overlay').addEventListener('click',function(e){if(e.target===this)cerrarModal()});
-document.getElementById('overlayConfig').addEventListener('click',function(e){if(e.target===this)cerrarConfig()});
-document.getElementById('overlayAuth').addEventListener('click',function(e){if(e.target===this)cerrarAuth()});
-document.getElementById('inputPassword').addEventListener('keydown',function(e){if(e.key==='Enter')hacerLogin()});
-document.getElementById('inputPasswordReg').addEventListener('keydown',function(e){if(e.key==='Enter')hacerRegistro()});
-
-actualizarAvatar();
-cargarDatos();
+  actualizarAvatar();
+  cargarDatos();
 </script>
 </body>
 </html>
